@@ -1,0 +1,4 @@
+# Netlify publica la carpeta tianguis-web tal cual, sin paso de build.
+[build]
+  publish = "tianguis-web"
+  command = ""
