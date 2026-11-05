@@ -1,5 +1,7 @@
 # Hoy toca tianguis
 
+Versión actual: **1.23** (noviembre 2026).
+
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
 - `tianguis-web/`: el sitio estático tal como se publica (Netlify lo sirve sin build).
