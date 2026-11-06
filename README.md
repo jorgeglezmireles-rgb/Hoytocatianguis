@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **1.23** (noviembre 2026).
+Versión actual: **1.24** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
