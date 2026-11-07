@@ -2,3 +2,7 @@
 [build]
   publish = "tianguis-web"
   command = ""
+
+# Funciones de Netlify (por ahora solo /hoy.json para los widgets de la app).
+[functions]
+  directory = "netlify/functions"
