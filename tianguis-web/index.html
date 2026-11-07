@@ -398,7 +398,12 @@
       </div>
       <div class="field">
         <label for="inputEsquina">¿En qué parte del tianguis se pone? <span class="muted">(opcional)</span></label>
-        <input id="inputEsquina" class="input" type="text" maxlength="120" placeholder="Ej. A media cuadra de Veracruz, lona azul" />
+        <input id="inputEsquina" class="input" type="text" maxlength="120" placeholder="Ej. A media cuadra de Veracruz" />
+      </div>
+      <div class="field">
+        <label for="inputRefVis">Referencia visual <span class="muted">(opcional)</span></label>
+        <input id="inputRefVis" class="input" type="text" maxlength="80" placeholder="Ej. Lona azul frente a la farmacia" />
+        <p class="small muted" style="margin:4px 0 0">Algo que se vea a simple vista. Ayuda cuando el GPS brinca entre las lonas.</p>
       </div>
       <div class="field" id="pinField">
         <span style="display:block;font-weight:700;font-size:14px;margin-bottom:4px">Marca el puesto en el mapa <span class="muted">(opcional)</span></span>
@@ -1415,6 +1420,7 @@
           </div>
         </div>
         ${h.esquina ? `<p class="small muted" style="margin:0">📍 ${escapeHtml(h.esquina)}</p>` : ''}
+        ${h.referencia_visual ? `<p class="small muted" style="margin:0">👀 ${escapeHtml(h.referencia_visual)}</p>` : ''}
         ${h.lat && h.lng ? `<button type="button" class="link-btn" style="align-self:flex-start" data-hpin="${escapeHtml(String(h.id))}">📍 Ver dónde está en el mapa</button>` : ''}
         ${h.tip ? `<p class="tip" style="margin:0">“${escapeHtml(h.tip)}”</p>` : ''}
         ${pagos ? `<p class="small muted" style="margin:0;font-weight:600">${pagos}</p>` : ''}
@@ -1651,6 +1657,7 @@
     $('inputCat').value = h.cat;
     document.querySelectorAll('input[name="inputPago"]').forEach(el => { el.checked = (h.pago || []).includes(el.value); });
     $('inputEsquina').value = h.esquina || '';
+    $('inputRefVis').value = h.referencia_visual || '';
     $('inputTip').value = h.tip || '';
   }
   function openEditarHallazgo(id) {
@@ -1709,23 +1716,34 @@
     const cat = $('inputCat').value;
     const pago = [...document.querySelectorAll('input[name="inputPago"]:checked')].map(el => el.value);
     const esquina = $('inputEsquina').value.trim();
+    const referencia_visual = $('inputRefVis').value.trim().slice(0, 80);
     const tip = $('inputTip').value.trim();
     if (!titulo) { $('formError').textContent = 'Escribe qué vale la pena en este puesto.'; $('inputTitulo').focus(); return; }
     if (!CATEGORIAS[cat]) { $('formError').textContent = 'Elige una categoría.'; return; }
     if (!pago.length) { $('formError').textContent = 'Marca al menos una forma de pago.'; return; }
     const rec = state.selected;
-    if (editando) return guardarEdicion(e, rec, { titulo, cat, esquina, tip, pago });
+    if (editando) return guardarEdicion(e, rec, { titulo, cat, esquina, referencia_visual, tip, pago });
     if (cloud.on) {
       const btn = e.submitter; if (btn) btn.disabled = true;
       const row = { tianguis_id: rec.id, titulo, cat, esquina: esquina || null, tip: tip || null, pago };
       const pin = pinValue(); if (pin) Object.assign(row, pin);
+      if (referencia_visual) row.referencia_visual = referencia_visual;
       let { data, error } = await cloud.sb.from('hallazgos').insert(row).select('id').single();
+      const sinRefVis = async () => {
+        // La base todavía no tiene la columna referencia_visual: publica sin ella
+        if (!(error && row.referencia_visual && /referencia_visual/i.test(error.message || ''))) return;
+        delete row.referencia_visual;
+        ({ data, error } = await cloud.sb.from('hallazgos').insert(row).select('id').single());
+        if (!error) console.warn('Falta la columna referencia_visual en Supabase; se publicó sin ella.');
+      };
+      await sinRefVis();
       if (error && pin && /lat|lng|column|schema cache/i.test(error.message || '')) {
         // La base todavía no tiene las columnas del pin: publica sin él
         delete row.lat; delete row.lng;
         ({ data, error } = await cloud.sb.from('hallazgos').insert(row).select('id').single());
         if (!error) console.warn('Faltan las columnas lat/lng en Supabase; se publicó sin pin.');
       }
+      await sinRefVis();
       if (!error && data) await cloud.sb.from('votos').insert({ hallazgo_id: data.id });
       if (btn) btn.disabled = false;
       if (error) { $('formError').textContent = cloudError(error); return; }
@@ -1740,7 +1758,7 @@
       if (innerWidth < 1024) setSheet('half');
       return;
     }
-    const h = { id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), titulo, cat, esquina, tip, pago, votos: 0, mio: true, fecha: new Date().toISOString(), ...(pinValue() || {}) };
+    const h = { id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), titulo, cat, esquina, referencia_visual, tip, pago, votos: 0, mio: true, fecha: new Date().toISOString(), ...(pinValue() || {}) };
     (userHallazgos[rec.id] = userHallazgos[rec.id] || []).push(h);
     myVotes[h.id] = 1;
     store.set(LS_H, userHallazgos); store.set(LS_V, myVotes);
@@ -1753,12 +1771,17 @@
 
   async function guardarEdicion(e, rec, v) {
     const h = editando; const pin = pinValue();
-    const cambios = { titulo: v.titulo, cat: v.cat, esquina: v.esquina || null, tip: v.tip || null, pago: v.pago,
+    const cambios = { titulo: v.titulo, cat: v.cat, esquina: v.esquina || null, referencia_visual: v.referencia_visual || null, tip: v.tip || null, pago: v.pago,
       lat: pin ? pin.lat : null, lng: pin ? pin.lng : null };
     if (cloud.on) {
       const btn = e.submitter; if (btn) btn.disabled = true;
       const row = { ...cambios, editado: new Date().toISOString() };
       let { data, error } = await cloud.sb.from('hallazgos').update(row).eq('id', h.id).select('id');
+      if (error && /referencia_visual/i.test(error.message || '')) {
+        // Sin la columna en Supabase todavía: guarda lo demás
+        delete row.referencia_visual;
+        ({ data, error } = await cloud.sb.from('hallazgos').update(row).eq('id', h.id).select('id'));
+      }
       if (error && /editado|column|schema cache/i.test(error.message || '')) {
         delete row.editado;
         ({ data, error } = await cloud.sb.from('hallazgos').update(row).eq('id', h.id).select('id'));
@@ -1774,7 +1797,7 @@
     } else {
       const arr = userHallazgos[rec.id] || []; const i = arr.findIndex(x => x.id === h.id);
       if (i < 0) { $('formError').textContent = 'Solo puedes editar tus propias recomendaciones.'; return; }
-      arr[i] = { ...arr[i], ...cambios, esquina: v.esquina, tip: v.tip, editado: new Date().toISOString() };
+      arr[i] = { ...arr[i], ...cambios, esquina: v.esquina, referencia_visual: v.referencia_visual, tip: v.tip, editado: new Date().toISOString() };
       store.set(LS_H, userHallazgos);
     }
     const ult = COMUNIDAD.latest.find(x => String(x.id) === String(h.id));

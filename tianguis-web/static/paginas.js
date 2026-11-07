@@ -15,6 +15,7 @@
           var pagos = Array.isArray(h.pago) ? h.pago.join(' · ') : (h.pago || '');
           return '<li>' + (h.cat ? '<span class="tag">' + (ICON[h.cat] || '') + ' ' + esc(h.cat) + '</span>' : '') +
             '<h3>' + esc(h.titulo) + '</h3>' + (h.esquina ? '<p class="small">📍 ' + esc(h.esquina) + '</p>' : '') +
+            (h.referencia_visual ? '<p class="small">👀 ' + esc(h.referencia_visual) + '</p>' : '') +
             (h.tip ? '<p class="tip">“' + esc(h.tip) + '”</p>' : '') +
             '<p class="small">' + esc(pagos) + ' · ▲ ' + (Number(h.votos) || 0) + ' puntos' + (h.alias ? ' · por ' + esc(h.alias) : '') + '</p></li>';
         }).join('');
