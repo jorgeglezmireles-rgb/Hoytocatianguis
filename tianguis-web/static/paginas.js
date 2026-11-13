@@ -1,7 +1,7 @@
 (function () {
   var SB = 'https://ozygcsqqbuenkqvehrsg.supabase.co', KEY = 'sb_publishable_RxjU9aHhNWpuWi3Jm9AbMQ_tMTjTZxI';
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var ICON = { 'Comida': '🍖', 'Paca': '👕', 'Chácharas': '💿', 'Abasto': '🥑' };
+  var ICON = {'Comida preparada': '🌮', 'Frutas y verduras': '🥕', 'Para preparar': '🥩', 'Paca': '👕', 'Ropa y calzado nuevo': '👟', 'Belleza y uñas': '💅', 'Chácharas': '💿', 'Plantas y flores': '🌿', 'Hogar y cocina': '🍳', 'Herramientas y refacciones': '🔧', 'Electrónica y celulares': '📱', 'Artesanías y regalos': '🎁', 'Mascotas': '🐾', 'Servicios': '✂️', 'Otro': '📦', 'Comida': '🌮', 'Abasto': '🥕'};
   // Recomendaciones en vivo (si la página no las trae ya escritas)
   var ul = document.querySelector('[data-hallazgos]');
   if (ul && ul.getAttribute('data-static') !== '1' && window.fetch) {
@@ -13,12 +13,35 @@
         if (!rows || !rows.length) return;
         ul.innerHTML = rows.map(function (h) {
           var pagos = Array.isArray(h.pago) ? h.pago.join(' · ') : (h.pago || '');
-          return '<li>' + (h.cat ? '<span class="tag">' + (ICON[h.cat] || '') + ' ' + esc(h.cat) + '</span>' : '') +
+          return '<li>' + (h.cat ? '<span class="tag">' + (ICON[h.cat] || '') + ' ' + esc(({'Comida': 'Comida preparada', 'Abasto': 'Frutas y verduras'})[h.cat] || h.cat) + '</span>' : '') +
             '<h3>' + esc(h.titulo) + '</h3>' + (h.esquina ? '<p class="small">📍 ' + esc(h.esquina) + '</p>' : '') +
+            (h.referencia_visual ? '<p class="small">👀 ' + esc(h.referencia_visual) + '</p>' : '') +
             (h.tip ? '<p class="tip">“' + esc(h.tip) + '”</p>' : '') +
             '<p class="small">' + esc(pagos) + ' · ▲ ' + (Number(h.votos) || 0) + ' puntos' + (h.alias ? ' · por ' + esc(h.alias) : '') + '</p></li>';
         }).join('');
         var e = document.querySelector('[data-empty]'); if (e) e.hidden = true;
+      }).catch(function () {});
+  }
+  // Fotos aprobadas (si la página no las trae ya escritas)
+  var fs = document.querySelector('[data-fotos]');
+  if (fs && fs.getAttribute('data-static') !== '1' && window.fetch) {
+    var fid = fs.getAttribute('data-fotos'), mapa = '/#t=' + encodeURIComponent(fid);
+    var url = function (r) { return SB + '/storage/v1/object/public/fotos/' + String(r).split('/').map(encodeURIComponent).join('/'); };
+    var fig = function (f) {
+      var t = f.titulo || '', u = esc(url(f.ruta));
+      var pie = t ? '<figcaption><a href="' + mapa + '">' + esc(t) + '</a>' + (f.alias ? ' · ' + esc(f.alias) : '') + '</figcaption>' : (f.alias ? '<figcaption>Foto de ' + esc(f.alias) + '</figcaption>' : '');
+      return '<figure><a href="' + u + '" target="_blank" rel="noopener"><img src="' + u + '" alt="' + esc(t ? 'Foto de ' + t : 'Foto del tianguis') + '" loading="lazy" decoding="async"' + (f.ancho && f.alto ? ' width="' + (+f.ancho) + '" height="' + (+f.alto) + '"' : '') + '></a>' + pie + '</figure>';
+    };
+    fetch(SB + '/rest/v1/fotos_publicas?select=*&tianguis_id=eq.' + encodeURIComponent(fid) + '&order=creado.desc&limit=24',
+      { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        if (!rows || !rows.length) return;
+        var gen = rows.filter(function (f) { return !f.hallazgo_id; }), pue = rows.filter(function (f) { return f.hallazgo_id; });
+        var g1 = fs.querySelector('[data-g=tianguis]'), g2 = fs.querySelector('[data-g=puesto]'), h3 = fs.querySelector('[data-g-titulo]');
+        if (gen.length) { g1.innerHTML = gen.map(fig).join(''); g1.hidden = false; }
+        if (pue.length) { g2.innerHTML = pue.map(fig).join(''); g2.hidden = false; h3.hidden = false; }
+        fs.hidden = false;
       }).catch(function () {});
   }
   // Página /hoy/: arma la lista del día con la hora de la CDMX
