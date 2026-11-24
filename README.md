@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.14** (noviembre 2026).
+Versión actual: **2.15** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,9 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.15
+- "Para pensar cosas": se quitó de "En preparación" el satélite con la muestra grande, que ya está publicado.
 
 ### 2.14
 - **"Para pensar cosas" nueva**: `datos.html` es ahora la portada de la sección, con una ficha por análisis y su cifra principal. Sigue con contraseña.
