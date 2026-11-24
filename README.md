@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.13** (noviembre 2026).
+Versión actual: **2.14** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,10 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.14
+- **"Para pensar cosas" nueva**: `datos.html` es ahora la portada de la sección, con una ficha por análisis y su cifra principal. Sigue con contraseña.
+- Análisis en `pensar/`: el km² con más tianguis (antes en `datos.html`), tianguis y comercio formal (DENUE y SEDECO), nivel socioeconómico con "¿De quién es la calle?" (Censo 2020 y Locatel), desiertos y pantanos alimentarios (DENUE, CONEVAL y defunciones del INEGI), la calle que se presta y los tianguis vistos desde el satélite Sentinel-2 (233 tianguis, 2017 a 2025).
 
 ### 2.13
 - **Recorrido de bienvenida en el celular**: la primera vez que alguien abre el sitio desde el celular, un recorrido corto (como el de la app) ilumina cada botón: días, cerca de ti, buscar, la ficha, recomendar y la cuenta. Se puede saltar y volver a ver en "❓ Cómo usar el mapa". No sale en computadora, ni dentro de la app, ni cuando se llega con una liga a un tianguis.
