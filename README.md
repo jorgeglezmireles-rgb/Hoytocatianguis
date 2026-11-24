@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.11** (noviembre 2026).
+Versión actual: **2.13** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,14 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.13
+- **Recorrido de bienvenida en el celular**: la primera vez que alguien abre el sitio desde el celular, un recorrido corto (como el de la app) ilumina cada botón: días, cerca de ti, buscar, la ficha, recomendar y la cuenta. Se puede saltar y volver a ver en "❓ Cómo usar el mapa". No sale en computadora, ni dentro de la app, ni cuando se llega con una liga a un tianguis.
+
+### 2.12
+- **Ficha de inicio nueva, "cerca de ti"**: en lugar de "Últimas recomendaciones" ahora muestra tres cosas: 📍 los tianguis que tocan hoy cerca (los 3 más cercanos, con horario, distancia y puestos), ⭐ recomendaciones a menos de 5 km con pestañas 🔥 Populares y 🆕 Nuevos, y 📷 fotos a menos de 5 km. Al tocar una recomendación o una foto se abre la ficha de su tianguis.
+- Si la persona no ha dado permiso de ubicación, hay un botón "📍 Usar mi ubicación" y se muestran las recomendaciones y fotos más recientes de toda la ciudad. El sitio no vuelve a pedir el permiso por su cuenta.
+- Se quitó el aviso "⭐ Toca aquí para ver las últimas recomendaciones", que repetía lo mismo.
 
 ### 2.11
 - **Imágenes para compartir nuevas**: las 23 tarjetas de días y alcaldías (`og/`) usan la línea gráfica actual: logo del pin, franja de lonas, títulos en Lilita One con sombra del color de cada día y los puntos del mapa. JPEG normal (baseline) de menos de 80 KB, para que WhatsApp las muestre. Las páginas las piden con `?v=2` para que las redes no usen las viejas guardadas.

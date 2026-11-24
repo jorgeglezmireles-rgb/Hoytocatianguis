@@ -320,6 +320,29 @@
     .foot-links .link-btn { font-size: 13px; font-weight: 700; color: var(--tinta-suave); }
     .drawer-foot { padding: 10px 16px; border-top: 1px solid var(--borde-suave); background: var(--crema); text-align: center; }
     .acerca p { margin: 0; font-size: 15px; line-height: 1.6; }
+    .ini-sec { display: flex; flex-direction: column; gap: 8px; }
+    .ini-sec + .ini-sec { margin-top: 6px; }
+    .ini-vacio { background: #fff; border: 1px dashed var(--borde); border-radius: 12px; padding: 10px 12px; font-size: 14px; color: var(--tinta-suave); }
+    .ini-vacio .btn { margin-top: 8px; }
+    .ini-fotos { display: grid; grid-auto-flow: column; grid-auto-columns: 42%; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; list-style: none; margin: 0; }
+    .ini-foto { display: block; width: 100%; padding: 0; border: 0; background: var(--papel); border-radius: 10px; overflow: hidden; text-align: left; font: inherit; color: inherit; cursor: pointer; scroll-snap-align: start; }
+    .ini-foto img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .ini-foto span { display: block; padding: 5px 7px 6px; font-size: 12px; font-weight: 700; line-height: 1.25; color: var(--tinta-suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (min-width: 1024px) { .ini-fotos { grid-auto-columns: 30%; } }
+    @media (min-width: 1024px) { .solo-movil-tour { display: none !important; } }
+    #webTour { position: fixed; inset: 0; z-index: 5000; }
+    #webTour .velo { position: absolute; inset: 0; background: #2B2118B3; }
+    #webTour .luz { position: absolute; border-radius: 16px; box-shadow: 0 0 0 9999px #2B2118B3; transition: all .25s ease; pointer-events: none; }
+    #webTour .tarjeta { position: absolute; left: 16px; right: 16px; max-width: 420px; margin: 0 auto; background: var(--papel); color: var(--tinta); border-radius: 18px; padding: 16px 16px 12px; box-shadow: 0 12px 40px #0006; transition: top .25s ease; }
+    #webTour h2 { font-size: 22px; line-height: 1.15; margin: 0 0 6px; }
+    #webTour p { font-size: 15px; line-height: 1.45; margin: 0; }
+    #webTour .pie { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; }
+    #webTour .puntos { display: flex; gap: 5px; }
+    #webTour .puntos i { width: 7px; height: 7px; border-radius: 50%; background: #2B211833; }
+    #webTour .puntos i.on { background: var(--barro); }
+    #webTour button { font: 700 14px/1 inherit; font-family: inherit; border-radius: 999px; padding: 10px 14px; border: 1.5px solid #2B211833; background: transparent; color: var(--tinta); cursor: pointer; }
+    #webTour button.sig { background: var(--barro); border-color: var(--barro); color: #fff; }
+    #webTour button.saltar { border: 0; padding: 10px 4px; text-decoration: underline; font-weight: 600; }
     .ult-list { display: flex; flex-direction: column; gap: 8px; list-style: none; margin: 0; padding: 0; }
     .ult { width: 100%; text-align: left; display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 1px solid var(--borde-suave); border-radius: 12px; padding: 10px 12px; font: inherit; color: inherit; cursor: pointer; }
     .ult:hover { border-color: var(--borde); }
@@ -711,7 +734,7 @@
         <button class="btn btn-suave" type="button" data-action="reportar">📍 Reportar un tianguis</button>
         <button class="btn btn-primario" type="button" data-close="modalAcerca">🗺️ Ir al mapa</button>
       </div>
-      <p class="small muted" id="versionSitio" style="margin:0;text-align:center">Versión 2.11 · noviembre 2026</p>
+      <p class="small muted" id="versionSitio" style="margin:0;text-align:center">Versión 2.13 · noviembre 2026</p>
     </div>
   </div>
 
@@ -1453,7 +1476,7 @@
     $('sheet').classList.toggle('con-busca', !state.near);
     const headHtml = state.near ? cercaHtml(base, diaTxt) : `
       <h2 class="serif resalte">¿A cuál vamos hoy?</h2>
-      <p class="muted small" style="margin:2px 0 0">${fmt(base.length)} tianguis con estos filtros.${COMUNIDAD.latest.length ? ` <strong style="color:var(--barro-osc)">⭐ Toca aquí para ver las últimas recomendaciones.</strong>` : ' Toca un punto del mapa o abre el directorio.'}</p>
+      <p class="muted small" style="margin:2px 0 0">${fmt(base.length)} tianguis con estos filtros. Toca un punto del mapa o abre el directorio.</p>
       <button type="button" class="busca-falsa" style="margin-top:8px" data-action="buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg>Busca por colonia, calle o alcaldía</button>`;
     // LCP: si la ficha ya muestra el mismo tipo de encabezado, actualiza el texto sin recrear los elementos
     const hdr = $('sheetHeader'), modo = state.near ? 'cerca' : 'inicio';
@@ -1464,12 +1487,13 @@
     const today = (new Date().getDay() + 6) % 7;
     const hoyN = RECS.filter(r => inArea(r) && (r.mask & (1 << today))).length;
     $('sheetBody').innerHTML = `
-      ${ultimasHtml(5) || `<div class="card empty"><p><strong>Todavía no hay recomendaciones.</strong></p><p class="muted small" style="margin:4px 0 10px">Elige un tianguis en el mapa y cuéntanos qué vale la pena.</p></div>`}
+      <div id="inicioCerca" class="ini-sec">${inicioHtml()}</div>
       <button type="button" class="btn btn-primario" data-action="today" style="align-self:flex-start">Ver los de hoy, ${DAYS[today].label.toLowerCase()} (${fmt(hoyN)})</button>
       <details class="card">
         <summary class="small" style="cursor:pointer;font-weight:800">❓ Cómo usar el mapa</summary>
         <ol class="guia-pasos" style="margin-top:10px">${$('guia').querySelector('.guia-pasos').innerHTML}</ol>
         <button type="button" class="link-btn guia-ver-lado" data-action="guia-abrir">Mostrar la guía a un lado del mapa</button>
+        <button type="button" class="link-btn solo-movil-tour" data-action="tour">▶️ Ver el recorrido de bienvenida</button>
         <p class="small" style="margin:10px 0 2px;font-weight:800">Cómo leer los colores</p>
         <p class="small muted" style="margin:0">Cada punto es la ubicación oficial ADIP, con el color del día en que se pone. Los puntos en tinta oscura tienen tianguis varios días en el mismo lugar. Los que tienen anillo amarillo ya tienen recomendaciones de la comunidad. Al acercarte, cada tianguis se dibuja como una línea sobre la calle que ocupa, entre sus calles de cruce. Los que no tienen calle identificada conservan el punto y un círculo proporcional a sus puestos.</p>
       </details>
@@ -1480,6 +1504,68 @@
         <button type="button" class="link-btn" data-action="reportar">¿No encuentras tu tianguis?</button>
         <button type="button" class="link-btn" data-action="acerca">Acerca de Hoy toca tianguis</button>
       </div>`;
+    cargarInicio();
+  }
+
+  // ---------- Inicio: lo que hay cerca de ti ----------
+  // Recomendaciones y fotos se piden una vez cada 5 minutos; la ubicación solo si ya dio permiso (no vuelve a preguntar).
+  const INICIO = { hz: null, fotos: null, t: 0, pos: null, posPedida: false, orden: 'populares', cargando: false };
+  const kmTxt = d => d < 1 ? `${Math.round(d * 1000 / 50) * 50} m` : `${d.toFixed(1).replace('.0', '')} km`;
+  function inicioHtml() {
+    const pos = state.near || INICIO.pos;
+    const today = (new Date().getDay() + 6) % 7;
+    let html = '';
+    // 1. Hoy toca, cerca de ti (si la ficha ya está en modo "cerca", el encabezado ya lo dice)
+    if (!state.near) {
+      if (pos) {
+        const hoy = RECS.filter(r => r.mask & (1 << today)).map(r => [r, distKm(pos, r.sede)]).filter(x => x[1] <= NEAR_KM).sort((a, b) => a[1] - b[1]);
+        const items = hoy.slice(0, 3).map(([r, d]) => { const hex = dayColor(r); return `<li><button type="button" class="cerca-item" data-rec="${escapeHtml(r.id)}">
+          <span class="cerca-dist" style="background:${hex};color:${textOn(hex)}">${d <= 1.5 ? '🚶' : '🚌'}<b>${kmTxt(d)}</b></span>
+          <span class="min0"><strong>${escapeHtml(r.nombre)}${r.nhz > 0 ? ` <span style="color:var(--barro-osc)">⭐ ${r.nhz}</span>` : ''}</strong>
+          <span class="cerca-meta">${r.horario ? `🕒 ${escapeHtml(r.horario)}` : '📅 ' + escapeHtml(diasTexto(r))}${r.oferentes > 0 ? ` · 🛍️ ${fmt(r.oferentes)} puestos` : ''}</span></span>
+          <span class="cerca-ir" aria-hidden="true">›</span></button></li>`; }).join('');
+        html += `<div class="section-head"><div><h3 class="serif">📍 Hoy toca, cerca de ti</h3><p class="muted">${hoy.length ? `${fmt(hoy.length)} tianguis este ${DAYS[today].label.toLowerCase()} a menos de ${NEAR_KM} km` : `Hoy no hay tianguis a menos de ${NEAR_KM} km`}</p></div>
+          ${hoy.length > 3 ? `<button type="button" class="btn btn-suave" data-action="ini-cerca">Ver en el mapa</button>` : ''}</div>
+          ${items ? `<ul class="cerca-lista">${items}</ul>` : ''}`;
+      } else {
+        html += `<div class="section-head"><div><h3 class="serif">📍 Hoy toca, cerca de ti</h3></div></div>
+          <div class="ini-vacio">Comparte tu ubicación y te digo qué tianguis se ponen hoy cerca, con sus recomendaciones y fotos.<br><button type="button" class="btn btn-primario" data-action="ini-cerca">📍 Usar mi ubicación</button></div>`;
+      }
+    }
+    // 2. Recomendaciones cerca (Populares / Nuevos)
+    const hzBase = (INICIO.hz || COMUNIDAD.latest).filter(h => REC_BY_ID[h.tianguis_id] && !(Number(h.votos) <= HUNDIDO)).map(h => ({ ...h, votos: Number(h.votos) || 0 }));
+    const hzs = pos ? hzBase.map(h => ({ h, d: distKm(pos, REC_BY_ID[h.tianguis_id].sede) })).filter(x => x.d <= NEAR_KM) : hzBase.map(h => ({ h, d: null }));
+    const dist = new Map(hzs.map(x => [x.h, x.d]));
+    const orden = ordenarHallazgos(hzs.map(x => x.h), INICIO.orden).slice(0, 5);
+    const tabs = `<div class="hz-orden" role="group" aria-label="Ordenar recomendaciones">${[['populares', '🔥 Populares'], ['nuevos', '🆕 Nuevos']].map(([k, l]) => `<button type="button" data-action="ini-orden" data-orden="${k}" aria-pressed="${k === INICIO.orden}">${l}</button>`).join('')}</div>`;
+    html += `<div class="section-head"><div><h3 class="serif">⭐ ${pos ? 'Recomendaciones cerca' : 'Recomendaciones'}</h3><p class="muted">${pos ? `Puestos a menos de ${NEAR_KM} km. ` : ''}Toca una para ir a su tianguis</p></div>
+      ${hzs.length > 5 ? `<button type="button" class="btn btn-suave" data-action="ini-todas">Ver todas</button>` : ''}</div>
+      ${orden.length ? tabs + `<ul class="ult-list">${orden.map(h => ultItem(h, dist.get(h))).join('')}</ul>`
+        : `<div class="ini-vacio">${INICIO.hz || !cloud.on ? (pos ? `Todavía nadie recomienda puestos a menos de ${NEAR_KM} km. Elige un tianguis en el mapa y cuéntanos qué vale la pena.` : 'Todavía no hay recomendaciones. Elige un tianguis en el mapa y cuéntanos qué vale la pena.') : 'Buscando recomendaciones…'}</div>`}`;
+    // 3. Fotos cerca
+    const fotos = (INICIO.fotos || []).filter(f => REC_BY_ID[f.tianguis_id] && (!pos || distKm(pos, REC_BY_ID[f.tianguis_id].sede) <= NEAR_KM)).slice(0, 12);
+    if (fotos.length) {
+      html += `<div class="section-head"><div><h3 class="serif">📷 ${pos ? 'Fotos cerca' : 'Fotos recientes'}</h3><p class="muted">Toca una para ir a su tianguis</p></div></div>
+        <ul class="ini-fotos">${fotos.map(f => { const r = REC_BY_ID[f.tianguis_id], pie = f.titulo ? `${f.titulo} · ${r.nombre}` : r.nombre;
+          return `<li><button type="button" class="ini-foto" data-rec="${escapeHtml(r.id)}" aria-label="Ir a ${escapeHtml(r.nombre)}"><img src="${escapeHtml(fotoUrl(f.ruta))}" alt="Foto${f.titulo ? ' de ' + escapeHtml(f.titulo) : ''} en ${escapeHtml(r.nombre)}" loading="lazy" decoding="async" width="300" height="300" /><span>${escapeHtml(pie)}</span></button></li>`; }).join('')}</ul>`;
+    }
+    return html;
+  }
+  function pintarInicio() { const box = $('inicioCerca'); if (box && !state.selected) box.innerHTML = inicioHtml(); }
+  async function cargarInicio() {
+    if (INICIO.cargando) return;
+    const tareas = [];
+    if (!INICIO.posPedida && !state.near) { INICIO.posPedida = true; tareas.push(ubicacionSiPermitida().then(p => { if (p) INICIO.pos = p; })); }
+    if (cloud.on && cloud.sb && Date.now() - INICIO.t > 300000) {
+      INICIO.t = Date.now();
+      tareas.push(cloud.sb.from('hallazgos_publicos').select('*').limit(500).then(r => { if (r && !r.error && r.data) INICIO.hz = r.data; }, () => {}));
+      tareas.push(cloud.sb.from('fotos_publicas').select('*').order('creado', { ascending: false }).limit(200).then(r => { if (r && !r.error && r.data) INICIO.fotos = r.data; }, () => {}));
+    }
+    if (!tareas.length) return;
+    INICIO.cargando = true;
+    try { await Promise.all(tareas); } catch (e) {}
+    INICIO.cargando = false;
+    pintarInicio();
   }
 
   // Conteo anónimo de fichas abiertas (sin datos personales): una vez por tianguis y por visita
@@ -3093,7 +3179,7 @@
       }
       if (auto && state.selected) return; // ya abrió un tianguis mientras respondía el permiso
       clearSelection();
-      state.near = here; state.alc = 'TODAS'; $('alcaldiaSelect').value = 'TODAS';
+      state.near = here; INICIO.pos = here; state.alc = 'TODAS'; $('alcaldiaSelect').value = 'TODAS';
       state.day = (new Date().getDay() + 6) % 7;
       $('btnCerca').classList.add('fab-on'); $('btnCerca').setAttribute('aria-pressed', 'true');
       applyFilters({ fit: false });
@@ -3217,6 +3303,10 @@
       else if (t.dataset.action === 'hz-ver') { (state.hzVer = state.hzVer || new Set()).add(t.dataset.id); if (state.selected) renderHallazgos(state.selected); }
       else if (t.dataset.action === 'compartir' && state.selected) compartirTianguis(state.selected);
       else if (t.dataset.action === 'ultimas') openUltimas();
+      else if (t.dataset.action === 'tour') iniciarTour();
+      else if (t.dataset.action === 'ini-orden') { INICIO.orden = t.dataset.orden; pintarInicio(); }
+      else if (t.dataset.action === 'ini-todas') openRecomendados();
+      else if (t.dataset.action === 'ini-cerca') locateMe({ auto: false });
       else if (t.dataset.action === 'conrec') { state.conRec = !state.conRec; applyFilters({ fit: false }); if (!state.selected) renderSummary(); if (state.conRec) openRecomendados(); }
       else if (t.dataset.action === 'guia-cerrar') setGuia(false);
       else if (t.dataset.action === 'guia-abrir') setGuia(true);
@@ -3257,6 +3347,71 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeader);
   }
 
+  /* ---------- Recorrido de bienvenida (celular, primera visita) ---------- */
+  const TOUR_PASOS = [
+    { t: '¡Bienvenido a Hoy toca tianguis!', d: 'El mapa de los más de 1,300 tianguis de la CDMX. Te enseño lo básico en medio minuto.' },
+    { sel: '.days', t: '¿Qué día vas?', d: 'Desliza esta barra para elegir el día: el mapa muestra solo los tianguis que se ponen ese día. También puedes elegir alcaldía o ver solo los ⭐ Recomendados.' },
+    { sel: '#btnCerca', t: 'Cerca de ti', d: 'Toca aquí para ver los tianguis de hoy a menos de 5 km de donde estás.' },
+    { sel: '#btnLista', t: 'Busca tu tianguis', d: 'Encuéntralo por colonia, calle o alcaldía, o revisa el directorio completo.' },
+    { sel: '#map', t: 'Toca un punto del mapa', d: 'Se abre la ficha del tianguis: horario, calles, cómo llegar, fotos y lo que recomienda la comunidad.', centro: true },
+    { sel: '#sheetHeader', t: 'Desliza hacia arriba', d: 'Abajo está lo que hay cerca de ti: los tianguis de hoy, los puestos recomendados y las fotos de la comunidad.' },
+    { sel: '#btnRecomendar', t: 'Recomienda un puesto', d: '¿Probaste unos tlacoyos buenísimos? Recomiéndalos para que otros los encuentren, con foto si quieres.' },
+    { sel: '#btnCuenta', t: 'Tu cuenta', d: 'Entra con Google o con tu correo para recomendar, votar y subir fotos. Para ver el mapa no hace falta.' },
+    { t: '¡Listo, a tianguear!', d: 'Puedes volver a ver este recorrido cuando quieras en “❓ Cómo usar el mapa”, abajo en el panel.', fin: true }
+  ];
+  let tourCaja = null, tourPaso = 0, tourPasos = [];
+  const tourVisible = el => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== 'hidden'; };
+  function iniciarTour() {
+    if (innerWidth < 1024 && state.sheet !== 'min') setSheet('min');
+    tourPasos = TOUR_PASOS.filter(x => !x.sel || tourVisible(document.querySelector(x.sel)));
+    tourPaso = 0;
+    if (!tourCaja) {
+      tourCaja = document.createElement('div'); tourCaja.id = 'webTour'; tourCaja.setAttribute('role', 'dialog'); tourCaja.setAttribute('aria-modal', 'true'); tourCaja.setAttribute('aria-label', 'Recorrido de bienvenida');
+      tourCaja.addEventListener('click', e => {
+        const b = e.target.closest('button'); if (!b) return;
+        if (b.classList.contains('saltar') || b.dataset.fin) return terminarTour();
+        tourPaso = Math.max(0, Math.min(tourPasos.length - 1, tourPaso + (b.classList.contains('sig') ? 1 : -1))); pintarTour();
+      });
+      tourCaja.addEventListener('keydown', e => { if (e.key === 'Escape') terminarTour(); });
+      addEventListener('resize', () => tourCaja && tourCaja.isConnected && pintarTour());
+    }
+    // espera a que la ficha termine de bajar para medir bien
+    setTimeout(() => { document.body.appendChild(tourCaja); pintarTour(); }, 320);
+  }
+  function pintarTour() {
+    const x = tourPasos[tourPaso], ult = tourPaso === tourPasos.length - 1;
+    const el = x.sel && document.querySelector(x.sel);
+    let luz = '', top = Math.round(innerHeight * 0.3);
+    if (el) {
+      const r = el.getBoundingClientRect(), m = 6;
+      let L = r.left - m, T = r.top - m, W = r.width + m * 2, H = r.height + m * 2;
+      if (x.centro) { W = Math.min(220, r.width - 40); H = Math.min(220, r.height - 40); L = r.left + (r.width - W) / 2; T = r.top + (r.height - H) / 2; }
+      luz = `<div class="luz" style="left:${L}px;top:${T}px;width:${W}px;height:${H}px"></div>`;
+      top = T + H + 14 + 230 < innerHeight ? T + H + 14 : Math.max(16, T - 14 - 230);
+    }
+    tourCaja.innerHTML = `${el ? '' : '<div class="velo"></div>'}${luz}
+      <div class="tarjeta" style="top:${top}px" aria-live="polite">
+        <h2 class="serif">${escapeHtml(x.t)}</h2><p>${escapeHtml(x.d)}</p>
+        <div class="pie">
+          ${ult ? '<span></span>' : '<button type="button" class="saltar">Saltar</button>'}
+          <div class="puntos" aria-hidden="true">${tourPasos.map((_, i) => `<i class="${i === tourPaso ? 'on' : ''}"></i>`).join('')}</div>
+          <div style="display:flex;gap:6px">${tourPaso > 0 && !ult ? '<button type="button" class="atras">Atrás</button>' : ''}
+            ${ult ? '<button type="button" class="sig" data-fin="1">Empezar a explorar</button>' : `<button type="button" class="sig">${tourPaso === 0 ? 'Empezar' : 'Siguiente'}</button>`}</div>
+        </div>
+      </div>`;
+    const sig = tourCaja.querySelector('.sig'); if (sig) sig.focus({ preventScroll: true });
+  }
+  function terminarTour() { if (tourCaja) tourCaja.remove(); try { localStorage.setItem('htt:tour', 'visto'); } catch (e) {} }
+  // Solo en celular, solo la primera vez, nunca dentro de la app (la app trae su propio recorrido)
+  function tourPrimeraVez() {
+    let visto = false; try { visto = !!localStorage.getItem('htt:tour'); } catch (e) { return; }
+    if (visto || innerWidth >= 1024 || window.Capacitor || window.HTTApp || /HoyTocaApp/i.test(navigator.userAgent)) return;
+    setTimeout(() => {
+      if (window.Capacitor || window.HTTApp || state.selected || document.querySelector('[data-open="true"]')) return; // llegó con liga a un tianguis o abrió algo: queda para la próxima
+      iniciarTour();
+    }, 1500);
+  }
+
   async function init() {
     bindEvents();
     populateAlcaldias();
@@ -3274,6 +3429,7 @@
     if (REC_BY_ID[fromHash]) selectRec(REC_BY_ID[fromHash], { fly: true });
     else locateMe({ auto: true });
     if (/acerca/.test(location.hash)) openOverlay('modalAcerca', '.icon-btn');
+    tourPrimeraVez();
   }
   document.addEventListener('DOMContentLoaded', init);
   </script>
