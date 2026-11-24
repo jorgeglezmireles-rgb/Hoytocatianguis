@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Tianguis desde el espacio · Para pensar cosas</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<script>/* "Para pensar cosas" pide contraseña (candado sencillo, no es seguridad real) */
+(function(){var ok=false;try{ok=localStorage.getItem('dt:pensar')==='1'}catch(e){}if(!ok)document.documentElement.className+=' candado';})();</script>
+<style>.candado body>*:not(#candado):not(script):not(style):not(link){display:none!important}#candado{display:none}.candado #candado{display:flex}
+#candado{min-height:100dvh;align-items:center;justify-content:center;padding:16px;background:#FBF7F0;font:16px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;color:#2B2118}
+#candado form{max-width:360px;width:100%;background:#FFF3D6;border:1px solid #EBD6AE;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px}
+#candado h1{margin:0;font:400 28px "Lilita One","Arial Rounded MT Bold",sans-serif}#candado input{font:inherit;padding:10px 12px;border:1px solid #EBD6AE;border-radius:10px;background:#fff}
+#candado button{font:inherit;font-weight:700;padding:10px 14px;border:0;border-radius:10px;background:#C8302A;color:#fff}#candado .err{color:#A8231C;font-size:14px;min-height:1em;margin:0}#candado a{color:#136BA0;font-size:14px}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#FBF7F0;--card:#F3ECE0;--ink:#2B2118;--mut:#6E6152;--barro:#C85A32;--tal:#1D5B79;--hoja:#3A6B4C;--maiz:#D99B26;--line:#E2D7C6;--road:#CDBFA9;--gris:#8D8273;
+--serif:"Fraunces",Georgia,serif;--sans:"Plus Jakarta Sans",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1C1712;--card:#27201A;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;--road:#5A4C3E;--gris:#9C907F;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1C1712;--card:#27201A;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;--road:#5A4C3E;--gris:#9C907F;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans)}
+.topnav{max-width:1080px;margin:0 auto;padding:16px 16px 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:700 14px var(--sans)}
+.topnav a{color:var(--tal);text-decoration:none}
+.draft{background:var(--maiz);color:#2B2118;font:700 13px var(--sans);text-align:center;padding:6px 16px}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 16px 64px;display:grid;gap:56px}
+h1,h2{font-family:var(--serif);font-weight:700;text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2rem,4.6vw,3.1rem)}h2{font-size:1.6rem}
+p{margin:0;max-width:65ch}a{color:var(--tal)}
+.kicker{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--barro);font-weight:700}
+.dek{font-size:1.15rem}
+.head{display:grid;gap:14px;max-width:760px}
+.sec{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:32px;border-top:1px solid var(--line);padding-top:32px;align-items:start}
+.sec.full{grid-template-columns:1fr}
+.txt{display:grid;gap:14px;align-content:start}
+.mapbox{background:var(--card);border-radius:6px;padding:8px}
+svg.m{display:block;width:100%;height:auto}
+.al{fill:none;stroke:var(--bg);stroke-width:1.2}.alf{fill:var(--line);opacity:.55}
+.rd{fill:none;stroke:var(--ink);stroke-width:.7;opacity:.25}
+.c-ambos{fill:var(--gris);opacity:.45}.c-pop{fill:var(--barro)}.c-for{fill:var(--tal)}.c-nin{fill:var(--ink)}
+.t-for{fill:var(--tal)}.t-mf{fill:var(--hoja)}.t-mer{fill:var(--barro)}.t-int{fill:var(--maiz)}.t-ais{fill:var(--ink)}
+circle{fill-opacity:.8;stroke:var(--bg);stroke-width:.5}
+.sq{fill:var(--gris);opacity:.7}.mk{fill:none;stroke:var(--barro);stroke-width:1}
+.legend{display:grid;gap:6px;font-size:.86rem}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:8px;vertical-align:-1px}
+.legend i.r{border-radius:50%}.legend b{font-variant-numeric:tabular-nums}
+.legend .c-ambos,.legend .c-pop,.legend .c-for,.legend .c-nin,.legend .t-for,.legend .t-mf,.legend .t-mer,.legend .t-int,.legend .t-ais{background:currentColor}
+.legend .c-ambos{color:var(--gris);opacity:.6}.legend .c-pop,.legend .t-mer{color:var(--barro)}.legend .c-for,.legend .t-for{color:var(--tal)}.legend .c-nin,.legend .t-ais{color:var(--ink)}.legend .t-mf{color:var(--hoja)}.legend .t-int{color:var(--maiz)}
+.sqk{background:var(--gris);width:8px!important;height:8px!important}.mkk{border:1.5px solid var(--barro);width:8px!important;height:8px!important;transform:rotate(45deg)}
+.big{font:700 2.6rem/1 var(--serif);color:var(--barro)}
+.cmp{display:grid;gap:10px}
+.cr{display:grid;grid-template-columns:minmax(0,1.2fr) 1fr 1fr;gap:12px;align-items:center;font-size:.9rem}
+.cr.h{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.cb{position:relative;height:22px;background:var(--card);border-radius:3px;overflow:hidden}
+.cb i{position:absolute;inset:0 auto 0 0}.bt{background:var(--barro)}.bc{background:var(--gris);opacity:.7}
+.cb b{position:relative;padding-left:8px;font-size:.82rem;line-height:22px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.smalls{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.sm{margin:0;background:var(--card);border-radius:6px;padding:6px}
+.sm figcaption{font-size:.82rem;display:grid;font-variant-numeric:tabular-nums}.sm figcaption span{color:var(--mut);font-size:.74rem}
+svg.s{display:block;width:100%;height:auto}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);text-align:left;font-weight:600;border-bottom:1px solid var(--line);padding:6px}
+td{padding:7px 6px;border-bottom:1px solid var(--line)}.n{text-align:right;font-variant-numeric:tabular-nums}
+.method{display:grid;gap:12px;background:var(--card);padding:24px;border-radius:6px}
+.method ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:80ch}
+.small{font-size:.82rem;color:var(--mut)}
+@media (max-width:900px){.sec{grid-template-columns:1fr}.smalls{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.sub{display:block;color:var(--mut);font-size:.78rem}
+.case{display:grid;gap:12px;border-top:1px solid var(--line);padding-top:28px}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tri figure{margin:0}.tri img{width:100%;display:block;border-radius:4px;image-rendering:pixelated}
+.tri figcaption{font-size:.78rem;color:var(--mut);margin-top:4px}
+.tag{display:inline-block;font:700 .72rem var(--sans);text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:3px;background:var(--card)}
+.tag.ok{color:var(--hoja)}.tag.mas{color:var(--barro)}.tag.mal{color:var(--tal)}
+</style></head><body>
+<div id="candado"><form id="candadoForm"><h1>💭 Para pensar cosas</h1><p style="margin:0;font-size:14px">Todavía está en pruebas: entra con la contraseña.</p>
+<label for="candadoClave" style="font-weight:700;font-size:14px">Contraseña</label><input id="candadoClave" type="password" autocomplete="current-password">
+<p class="err" id="candadoErr" role="alert"></p><button type="submit">Entrar</button><a href="/">← Volver al mapa</a></form></div>
+<script>document.getElementById('candadoForm').addEventListener('submit',async function(e){e.preventDefault();var v=document.getElementById('candadoClave').value.trim(),h='';
+try{var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));h=Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')}catch(err){}
+if(h!=='72d446634e982321ec8dd45ab02ad32695eb399615d3123f0cd262407d1c0490'){document.getElementById('candadoErr').textContent='Esa no es. Inténtalo otra vez.';return}
+try{localStorage.setItem('dt:pensar','1')}catch(err){}document.documentElement.classList.remove('candado');window.scrollTo(0,0)});</script>
+<nav class="topnav"><a href="../datos.html">← Para pensar cosas</a><span class="small">Imágenes: Copernicus Sentinel-2 (ESA), 2024–2025</span></nav>
+<main class="wrap">
+<header class="head"><p class="kicker">Hoy toca tianguis · Para pensar cosas · Piloto</p>
+<h1>Los tianguis se ven desde el espacio</h1>
+<p class="dek">Con imágenes gratuitas del satélite Sentinel-2 comparamos el día de tianguis contra el resto de la semana en seis tianguis grandes. En cuatro aparece una huella clara de las lonas y en uno, débil. Y la huella dice cosas que el registro oficial no dice: hay tianguis más largos que su trazo y trazos en la calle equivocada.</p>
+<p class="small">Cómo leer cada caso: a la izquierda, la mediana de todas las imágenes sin nubes tomadas el día de tianguis (2024 y 2025); en medio, la de los demás días; a la derecha, la diferencia entre las dos (más oscuro = más cambio) con el trazo del mapa en azul. Cada pixel mide 10 × 10 m.</p>
+</header>
+<section class="case"><p><span class="tag ok">Coincide</span></p><h2 style="font-size:1.3rem">Av. José Clemente Orozco, José López Portillo, Iztapalapa (sábado y domingo)</h2><p>La huella sigue el trazo casi exacto, pero se extiende más: mide unos 2.7 km contra los 2 km del trazo. Es el tianguis más grande del registro: 6,000 oferentes el domingo.</p><div class="tri"><figure><img src="img/orozco_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/orozco_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/orozco_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 2,043 m. Largo aproximado de la huella conectada al trazo: 2,673 m.</p></section><section class="case"><p><span class="tag mas">Más largo que el trazo</span></p><h2 style="font-size:1.3rem">Texcoco y Francisco Leyva, Juan Escutia, Iztapalapa (domingo)</h2><p>La huella sigue más allá del trazo hacia el poniente y se mete por varias calles transversales. El tianguis real mide bastante más que el tramo oficial.</p><div class="tri"><figure><img src="img/escutia_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/escutia_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/escutia_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 2,082 m. Largo aproximado de la huella conectada al trazo: 3,102 m.</p></section><section class="case"><p><span class="tag mas">Más largo que el trazo</span></p><h2 style="font-size:1.3rem">Villa de Ayala, San Felipe de Jesús, GAM (domingo)</h2><p>El trazo, que calculamos a partir del número de oferentes, cubre solo el extremo oriente. La huella sigue cientos de metros hacia el poniente, además de manzanas al noroeste.</p><div class="tri"><figure><img src="img/sanfelipe_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/sanfelipe_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/sanfelipe_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 1,391 m. Largo aproximado de la huella conectada al trazo: 1,485 m.</p></section><section class="case"><p><span class="tag ok">Coincide</span></p><h2 style="font-size:1.3rem">Apatlaco entre La Viga y Troncoso, Iztapalapa (sábado y domingo)</h2><p>Huella débil pero alineada con el trazo. Las lonas aquí se distinguen menos del asfalto.</p><div class="tri"><figure><img src="img/apatlaco_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/apatlaco_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/apatlaco_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 1,251 m. Largo aproximado de la huella conectada al trazo: 1,364 m.</p></section><section class="case"><p><span class="tag mal">Calle equivocada</span></p><h2 style="font-size:1.3rem">Av. Gran Canal, 25 de Julio, GAM (domingo)</h2><p>El trazo va sobre Gran Canal, pero la huella está en la calle perpendicular que sale hacia el oriente y en las manzanas de al lado. Es candidato a corrección.</p><div class="tri"><figure><img src="img/grancanal_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/grancanal_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/grancanal_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 1,679 m. Largo aproximado de la huella conectada al trazo: 473 m.</p></section><section class="case"><p><span class="tag mal">Sin huella en el trazo</span></p><h2 style="font-size:1.3rem">U. H. Santa Cruz Meyehualco, Iztapalapa (martes y viernes)</h2><p>No aparece nada sobre el trazo. Sí hay huella en otra avenida al norte de la ventana. O el trazo está en la calle equivocada, o los puestos de entre semana son demasiado pequeños para verse a 10 m.</p><div class="tri"><figure><img src="img/meyehualco_0.jpg" alt="Día de tianguis"><figcaption>Día de tianguis</figcaption></figure><figure><img src="img/meyehualco_1.jpg" alt="Otros días"><figcaption>Otros días</figcaption></figure><figure><img src="img/meyehualco_2.jpg" alt="Diferencia con el trazo"><figcaption>Diferencia y trazo del mapa (azul)</figcaption></figure></div><p class="small">Trazo del mapa: 1,309 m. Largo aproximado de la huella conectada al trazo: 11 m.</p></section><section class="case" id="evolucion"><p class="kicker">Año por año · 2019–2025</p>
+<h2 style="font-size:1.6rem">En 2020 los tianguis se encogieron, y para 2021 ya habían vuelto</h2>
+<p>Repetimos la comparación para cada año en los 40 tianguis más grandes. En 22 la huella es lo bastante clara para seguirla. Cada punto es la huella mediana de esos tianguis ese año, como porcentaje de su propio promedio; la línea va del cuartil inferior al superior.</p>
+<div style="background:var(--card);border-radius:6px;padding:12px"><svg viewBox="0 0 640 300" role="img" aria-label="Huella mediana de los tianguis por año, 2019 a 2025" style="width:100%;height:auto;display:block"><line x1="48" x2="624" y1="264.0" y2="264.0" stroke="var(--line)" stroke-width="1"/><text x="40" y="268.0" font-size="12" fill="var(--mut)" text-anchor="end" font-family="var(--sans)">60%</text><line x1="48" x2="624" y1="202.0" y2="202.0" stroke="var(--line)" stroke-width="1"/><text x="40" y="206.0" font-size="12" fill="var(--mut)" text-anchor="end" font-family="var(--sans)">80%</text><line x1="48" x2="624" y1="140.0" y2="140.0" stroke="var(--line)" stroke-width="1.5"/><text x="40" y="144.0" font-size="12" fill="var(--mut)" text-anchor="end" font-family="var(--sans)">100%</text><line x1="48" x2="624" y1="78.0" y2="78.0" stroke="var(--line)" stroke-width="1"/><text x="40" y="82.0" font-size="12" fill="var(--mut)" text-anchor="end" font-family="var(--sans)">120%</text><line x1="48" x2="624" y1="16.0" y2="16.0" stroke="var(--line)" stroke-width="1"/><text x="40" y="20.0" font-size="12" fill="var(--mut)" text-anchor="end" font-family="var(--sans)">140%</text><line x1="48.0" x2="48.0" y1="91.8" y2="153.3" stroke="var(--ink)" stroke-width="2"/><circle cx="48.0" cy="132.6" r="6" fill="var(--ink)"/><text x="48.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2019</text><line x1="144.0" x2="144.0" y1="130.9" y2="202.0" stroke="var(--barro)" stroke-width="2"/><circle cx="144.0" cy="161.0" r="6" fill="var(--barro)"/><text x="144.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2020</text><line x1="240.0" x2="240.0" y1="117.0" y2="159.2" stroke="var(--ink)" stroke-width="2"/><circle cx="240.0" cy="141.2" r="6" fill="var(--ink)"/><text x="240.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2021</text><line x1="336.0" x2="336.0" y1="140.0" y2="188.2" stroke="var(--ink)" stroke-width="2"/><circle cx="336.0" cy="151.3" r="6" fill="var(--ink)"/><text x="336.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2022</text><line x1="432.0" x2="432.0" y1="131.6" y2="150.6" stroke="var(--ink)" stroke-width="2"/><circle cx="432.0" cy="140.0" r="6" fill="var(--ink)"/><text x="432.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2023</text><line x1="528.0" x2="528.0" y1="132.0" y2="157.7" stroke="var(--ink)" stroke-width="2"/><circle cx="528.0" cy="142.3" r="6" fill="var(--ink)"/><text x="528.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2024</text><line x1="624.0" x2="624.0" y1="100.9" y2="147.2" stroke="var(--ink)" stroke-width="2"/><circle cx="624.0" cy="137.8" r="6" fill="var(--ink)"/><text x="624.0" y="288" font-size="13" fill="var(--ink)" text-anchor="middle" font-family="var(--sans)" font-weight="600">2025</text></svg></div>
+<p>En 2020, la huella mediana bajó a 93% de lo normal, y 11 de los 21 tianguis con dato en 2019 y 2020 perdieron más del 15%. En 2021 la mediana ya estaba en 100%. Es consistente con los cierres y restricciones de la pandemia, aunque con pocas imágenes por año el dato de cada tianguis es ruidoso.</p>
+<h3 style="font:700 1.15rem var(--serif);margin:12px 0 0">Los que más cambiaron</h3>
+<div class="tw"><table><thead><tr><th>Tianguis</th><th class="n">2019–2021</th><th class="n">2023–2025</th><th class="n">Cambio</th></tr></thead><tbody><tr><td>Ejercito de Oriente<span class="sub">Iztapalapa · Sábado</span></td><td class="n">560 m</td><td class="n">310 m</td><td class="n">-45%</td></tr><tr><td>San Pedro Cuajimalpa<span class="sub">Cuajimalpa · Sábado</span></td><td class="n">440 m</td><td class="n">250 m</td><td class="n">-44%</td></tr><tr><td>Cerro de La Estrella<span class="sub">Iztapalapa · Martes</span></td><td class="n">840 m</td><td class="n">630 m</td><td class="n">-24%</td></tr><tr><td>Morelos<span class="sub">Cuauhtémoc · Domingo</span></td><td class="n">800 m</td><td class="n">1,210 m</td><td class="n">+52%</td></tr><tr><td>Vallejo<span class="sub">Gustavo A. Madero · Domingo</span></td><td class="n">390 m</td><td class="n">970 m</td><td class="n">+150%</td></tr></tbody></table></div>
+<p class="small">Largo aproximado de la huella conectada al trazo, promedio de cada periodo. Con imágenes de 10 m, cambios menores a 100 m no son confiables. Dejamos fuera 2017 y 2018 porque hay pocas imágenes útiles y se procesaron con una versión anterior del algoritmo de la ESA.</p></section><section class="method"><h3 style="font:700 1.15rem var(--serif);margin:0">Cómo se hizo y qué sigue</h3><ul>
+<li><b>Imágenes:</b> 98 escenas de Sentinel-2 nivel 2A del cuadro 14QMG con menos de 20% de nubes, 2024 y 2025, leídas del archivo abierto en AWS. El satélite pasa hacia las 11:00, cuando los tianguis están montados. Quitamos nubes y sombras pixel por pixel con la máscara de escena.</li>
+<li><b>Huella:</b> distancia de color (rojo, verde, azul) entre la mediana del día de tianguis y la mediana del resto. El largo de la huella es aproximado: esqueleto de los pixeles por encima del 99% del fondo, conectados al trazo.</li>
+<li><b>Límite:</b> a 10 m solo se ven tianguis grandes y con lonas de color. Los chicos y los de calles con árboles se pierden.</li>
+<li><b>Serie anual:</b> 339 escenas de 2017 a 2025 con menos de 20% de nubes. Cada escena se normaliza por su propio brillo para que la neblina y los cambios de procesamiento de la ESA no se confundan con tianguis.</li><li><b>Siguiente paso:</b> ampliar de 40 a todos los tianguis grandes y, para los chicos, probar imágenes de 3 m (PlanetScope, programa académico).</li>
+</ul></section></main><!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c880fa78443845cf9ebfe920b5b8b13d"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
