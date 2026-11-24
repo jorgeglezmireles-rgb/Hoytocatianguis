@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.15** (noviembre 2026).
+Versión actual: **2.16** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,9 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.16
+- "Para pensar cosas": la ficha "¿De quién es la calle?" trae de fondo un mapa con las quejas de Locatel junto a tianguis sobre el nivel socioeconómico.
 
 ### 2.15
 - "Para pensar cosas": se quitó de "En preparación" el satélite con la muestra grande, que ya está publicado.
