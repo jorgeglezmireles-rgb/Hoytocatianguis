@@ -30,11 +30,11 @@
 /* Tablero de cifras: cada análisis es una ficha cuya cifra es el titular; el mapa de la pieza asoma por el borde de la ficha */
 :root{--bg:#FBF7F0;--card:#F3ECE0;--card2:#EDE3D3;--ink:#2B2118;--mut:#6E6152;--barro:#C85A32;--tal:#1D5B79;--hoja:#3A6B4C;--maiz:#B97F12;--line:#E2D7C6;
 --serif:"Fraunces",Georgia,serif;--sans:"Plus Jakarta Sans",system-ui,sans-serif;
---th-km2:url(pensar/img/th/km2-light.png);--th-comercio:url(pensar/img/th/comercio-light.png);--th-nse:url(pensar/img/th/nse-light.png);--th-desiertos:url(pensar/img/th/desiertos-light.png);--th-calle:url(pensar/img/th/calle-light.png)}
+--th-km2:url(pensar/img/th/km2-light.png);--th-comercio:url(pensar/img/th/comercio-light.png);--th-nse:url(pensar/img/th/nse-light.png);--th-desiertos:url(pensar/img/th/desiertos-light.png);--th-calle:url(pensar/img/th/calle-light.png);--th-quejas:url(pensar/img/th/calle-quejas-light.png)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1C1712;--card:#27201A;--card2:#2F271F;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;color-scheme:dark;
---th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png)}}
+--th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png)}}
 :root[data-theme="dark"]{--bg:#1C1712;--card:#27201A;--card2:#2F271F;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;color-scheme:dark;
---th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png)}
+--th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png)}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
 .preview{background:var(--maiz);color:#2B2118;font:700 13px var(--sans);text-align:center;padding-block:6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1180px;margin:0 auto;padding-block:24px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:36px}
@@ -69,7 +69,8 @@ h1{font:900 clamp(2.6rem,6.4vw,5.2rem)/.92 var(--serif);margin:0;letter-spacing:
 .t-com{grid-column:span 6;--acc:var(--barro);--th:var(--th-comercio)}
 .t-calle{grid-column:span 5;--acc:var(--maiz);--th:var(--th-calle)}
 .t-esp{grid-column:1/-1;--acc:var(--tal)}
-.t-qj{grid-column:span 7;--acc:var(--tal)}.t-qj::after{display:none}
+.t-qj{grid-column:span 7;--acc:var(--tal);--th:var(--th-quejas)}
+.t-qj .num,.t-qj .top,.t-qj .duel{max-width:58%}.t-qj::after{width:48%}
 .t-qj .duel div:first-child s em{background:var(--barro)}.t-qj .duel div:last-child s em{background:var(--tal)}
 .t-esp::after{display:none}
 
