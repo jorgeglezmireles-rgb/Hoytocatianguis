@@ -6,7 +6,7 @@
 <title>Para pensar cosas · Hoy toca tianguis</title>
 <meta name="description" content="Cifras y preguntas sobre los tianguis de la Ciudad de México: dónde se ponen, qué calle ocupan, con quién compiten y cómo cambian con los años.">
 <meta property="og:title" content="Para pensar cosas · Hoy toca tianguis">
-<meta property="og:description" content="Cifras y preguntas sobre los 1,066 sitios de tianguis de la Ciudad de México, con datos abiertos.">
+<meta property="og:description" content="Cifras y preguntas sobre los más de 1,300 tianguis de la Ciudad de México, repartidos en 1,066 lugares, con datos abiertos.">
 <meta property="og:image" content="https://hoytocatianguis.com/compartir.jpg">
 <meta property="og:url" content="https://hoytocatianguis.com/datos.html">
 <meta property="og:type" content="website">
@@ -27,19 +27,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap">
 <style>
-/* Tablero de cifras: cada análisis es una ficha cuya cifra es el titular; el mapa de la pieza asoma por el borde de la ficha */
+/* Tablero: cada ficha se lee como una nota. Dicho (cintillo) → título → cifra de apoyo → leer. El mapa de la pieza asoma por el borde */
 :root{--bg:#FBF7F0;--card:#F3ECE0;--card2:#EDE3D3;--ink:#2B2118;--mut:#6E6152;--barro:#C85A32;--tal:#1D5B79;--hoja:#3A6B4C;--maiz:#B97F12;--line:#E2D7C6;
 --serif:"Fraunces",Georgia,serif;--sans:"Plus Jakarta Sans",system-ui,sans-serif;
---th-km2:url(pensar/img/th/km2-light.png);--th-comercio:url(pensar/img/th/comercio-light.png);--th-nse:url(pensar/img/th/nse-light.png);--th-desiertos:url(pensar/img/th/desiertos-light.png);--th-calle:url(pensar/img/th/calle-light.png);--th-quejas:url(pensar/img/th/calle-quejas-light.png)}
+--th-km2:url(pensar/img/th/km2-light.png);--th-comercio:url(pensar/img/th/comercio-light.png);--th-nse:url(pensar/img/th/nse-light.png);--th-desiertos:url(pensar/img/th/desiertos-light.png);--th-calle:url(pensar/img/th/calle-light.png);--th-quejas:url(pensar/img/th/calle-quejas-light.png);--th-altitud:url(pensar/img/th/altitud-light.png);--th-transporte:url(pensar/img/th/transporte-light.png);--th-inseguridad:url(pensar/img/th/inseguridad-light.png);--th-informal:url(pensar/img/th/informal-light.png)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1C1712;--card:#27201A;--card2:#2F271F;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;color-scheme:dark;
---th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png)}}
+--th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png);--th-altitud:url(pensar/img/th/altitud-dark.png);--th-transporte:url(pensar/img/th/transporte-dark.png);--th-inseguridad:url(pensar/img/th/inseguridad-dark.png);--th-informal:url(pensar/img/th/informal-dark.png)}}
 :root[data-theme="dark"]{--bg:#1C1712;--card:#27201A;--card2:#2F271F;--ink:#F1E8DA;--mut:#B3A591;--barro:#E07A50;--tal:#6FA6C4;--hoja:#6FA27F;--maiz:#E2B04F;--line:#3A3027;color-scheme:dark;
---th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png)}
+--th-km2:url(pensar/img/th/km2-dark.png);--th-comercio:url(pensar/img/th/comercio-dark.png);--th-nse:url(pensar/img/th/nse-dark.png);--th-desiertos:url(pensar/img/th/desiertos-dark.png);--th-calle:url(pensar/img/th/calle-dark.png);--th-quejas:url(pensar/img/th/calle-quejas-dark.png);--th-altitud:url(pensar/img/th/altitud-dark.png);--th-transporte:url(pensar/img/th/transporte-dark.png);--th-inseguridad:url(pensar/img/th/inseguridad-dark.png);--th-informal:url(pensar/img/th/informal-dark.png)}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
 .preview{background:var(--maiz);color:#2B2118;font:700 13px var(--sans);text-align:center;padding-block:6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1180px;margin:0 auto;padding-block:24px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:36px}
 .topnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:700 14px var(--sans)}
-.topnav a{color:var(--tal);text-decoration:none}.topnav a:hover{text-decoration:underline}.topnav small{color:var(--mut);font-weight:600}
+.topnav span{color:var(--tal)}.topnav a{color:var(--tal);text-decoration:none}.topnav a:hover{text-decoration:underline}.topnav small{color:var(--mut);font-weight:600}
 .head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 48px;align-items:end}
 .kicker{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--barro);font-weight:700;margin:0 0 8px}
 h1{font:900 clamp(2.6rem,6.4vw,5.2rem)/.92 var(--serif);margin:0;letter-spacing:-.02em;text-wrap:balance}
@@ -48,36 +48,45 @@ h1{font:900 clamp(2.6rem,6.4vw,5.2rem)/.92 var(--serif);margin:0;letter-spacing:
 
 .board{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
 .tile{--acc:var(--barro);position:relative;overflow:hidden;background:var(--card);border-radius:10px;color:inherit;text-decoration:none;
-  display:grid;align-content:space-between;gap:20px;padding:24px;min-height:340px;isolation:isolate;transition:background .2s}
+  display:flex;flex-direction:column;gap:22px;padding:26px 26px 22px;min-height:360px;isolation:isolate;transition:background .2s}
 .tile:hover{background:var(--card2)}
 .tile:focus-visible{outline:3px solid var(--tal);outline-offset:3px}
-.tile::after{content:"";position:absolute;z-index:-1;right:-6%;bottom:-8%;width:56%;aspect-ratio:420/563;background:var(--th) no-repeat right bottom/contain;transition:transform .35s ease}
+.tile::after{content:"";position:absolute;z-index:-1;right:-6%;bottom:-8%;width:50%;opacity:.85;aspect-ratio:420/563;background:var(--th) no-repeat right bottom/contain;transition:transform .35s ease}
 .tile:hover::after{transform:scale(1.03) translate(-1%,-1%)}
-.top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.74rem;color:var(--mut);max-width:60%}
-.chip{font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:3px;background:var(--bg)}
-.chip.pub{color:var(--hoja)}.chip.bor{color:var(--barro)}
-.num{display:grid;gap:8px;max-width:60%}
-.num b{font:900 clamp(4.2rem,9vw,7.6rem)/.85 var(--serif);color:var(--acc);letter-spacing:-.035em;font-variant-numeric:lining-nums tabular-nums}
-.num b small{font-size:.42em;letter-spacing:-.01em;margin-left:.06em}
-.num span{font:600 1.08rem/1.35 var(--sans);text-wrap:balance}
-.q{font:700 1.12rem/1.25 var(--serif);margin:0;max-width:30ch;text-wrap:balance;padding-top:14px;border-top:1.5px solid var(--acc)}
-.q i{font-style:normal;color:var(--acc);margin-left:6px;display:inline-block;transition:transform .2s}.tile:hover .q i{transform:translateX(4px)}
+.top{display:grid;gap:4px;max-width:62%}
+.tt{display:none}
+.src{font:700 .7rem/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.tile h2{font:800 clamp(1.9rem,3.2vw,2.7rem)/1 var(--serif);letter-spacing:-.02em;margin:-10px 0 0;max-width:14ch;text-wrap:balance;color:var(--ink)}
+.t-nse h2,.t-esp h2{font-size:clamp(2.1rem,3.8vw,3.1rem)}
+.sub{font:500 1.12rem/1.35 var(--serif);font-style:italic;color:var(--mut);margin:-12px 0 0;max-width:30ch;text-wrap:balance}
+.t-esp .sub{max-width:46%}
+.body{display:grid;gap:14px;max-width:62%;align-content:start}
+.num{display:grid;gap:4px}
+.num b{font:800 clamp(2.6rem,4.4vw,3.5rem)/.95 var(--serif);color:var(--acc);letter-spacing:-.03em;font-variant-numeric:lining-nums tabular-nums}
+.num b small{font-size:.5em;letter-spacing:-.01em;margin-left:.06em}
+.num span{font:500 .98rem/1.45 var(--sans);color:var(--mut);max-width:36ch;text-wrap:pretty}
+.go{margin:auto 0 0;font:700 .86rem var(--sans);color:var(--acc);display:flex;gap:6px;align-items:center}
+.go i{font-style:normal;display:inline-block;transition:transform .2s}.tile:hover .go i{transform:translateX(4px)}
 
-.t-nse{grid-column:span 7;min-height:440px;--acc:var(--barro);--th:var(--th-nse)}
+.t-nse{grid-column:span 7;min-height:420px;--acc:var(--barro);--th:var(--th-nse)}
 .t-km2{grid-column:span 5;--acc:var(--tal);--th:var(--th-km2)}
 .t-des{grid-column:span 6;--acc:var(--hoja);--th:var(--th-desiertos)}
 .t-com{grid-column:span 6;--acc:var(--barro);--th:var(--th-comercio)}
 .t-calle{grid-column:span 5;--acc:var(--maiz);--th:var(--th-calle)}
 .t-esp{grid-column:1/-1;--acc:var(--tal)}
+.t-alt{grid-column:span 6;--acc:var(--maiz);--th:var(--th-altitud)}
+.t-tra{grid-column:span 6;--acc:var(--tal);--th:var(--th-transporte)}
+.t-ins{grid-column:span 7;--acc:var(--barro);--th:var(--th-inseguridad)}
+.t-inf{grid-column:span 5;--acc:var(--barro);--th:var(--th-informal)}
 .t-qj{grid-column:span 7;--acc:var(--tal);--th:var(--th-quejas)}
-.t-qj .num,.t-qj .top,.t-qj .duel{max-width:58%}.t-qj::after{width:48%}
-.t-qj .duel div:first-child s em{background:var(--barro)}.t-qj .duel div:last-child s em{background:var(--tal)}
+.t-qj .body,.t-qj .top{max-width:58%}.t-qj::after{width:46%}
+.t-qj .duel div:first-child s em{background:var(--barro)}.t-ins .duel div:last-child s em{background:#4A5A73}.t-tra .duel div:first-child s em{background:var(--barro)}.t-qj .duel div:last-child s em{background:var(--tal)}
 .t-esp::after{display:none}
 
-.num .vs{font:900 .42em/1 var(--serif);color:var(--tal);margin-left:.25em;letter-spacing:-.01em}
-.duel{display:grid;gap:8px;max-width:340px;font-size:.82rem;color:var(--mut)}
+.num .vs{font:800 .5em/1 var(--serif);color:var(--tal);margin-left:.25em;letter-spacing:-.01em}
+.duel{display:grid;gap:7px;max-width:320px;font-size:.8rem;color:var(--mut)}
 .duel div{display:grid;grid-template-columns:72px minmax(0,1fr) 40px;gap:10px;align-items:center}
-.duel s{display:block;height:12px;border-radius:2px;text-decoration:none;background:var(--bg)}
+.duel s{display:block;height:10px;border-radius:2px;text-decoration:none;background:var(--bg)}
 .duel s em{display:block;height:100%;border-radius:2px;background:var(--barro)}
 .duel div:last-child s em{background:var(--tal)}
 .duel b{color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
@@ -86,7 +95,7 @@ h1{font:900 clamp(2.6rem,6.4vw,5.2rem)/.92 var(--serif);margin:0;letter-spacing:
 .sat img{min-height:0}
 .sat img{width:100%;height:100%;object-fit:cover;display:block}
 .sat figcaption{position:absolute;left:10px;bottom:10px;font:700 .7rem var(--sans);color:#fff;background:rgba(0,0,0,.6);padding:3px 7px;border-radius:3px}
-.t-esp .num,.t-esp .top,.t-esp .q,.t-esp .yr{max-width:46%}
+.t-esp .body,.t-esp .top,.t-esp h2{max-width:46%}
 .yr{display:grid;gap:4px}
 .years{display:flex;gap:5px;align-items:flex-end;height:48px;max-width:240px}
 .years i{flex:1;background:var(--acc);border-radius:2px 2px 0 0;opacity:.45}
@@ -101,15 +110,16 @@ h1{font:900 clamp(2.6rem,6.4vw,5.2rem)/.92 var(--serif);margin:0;letter-spacing:
 
 @media (max-width:900px){
  .head{grid-template-columns:1fr}
- .tile,.t-nse{grid-column:1/-1;min-height:300px}
- .tile::after{width:46%;opacity:.45}
- .num,.top,.t-esp .num,.t-esp .top,.t-esp .q,.t-esp .yr{max-width:none}
+ .tile,.t-nse{grid-column:1/-1;min-height:0}
+ .tile::after{width:42%;opacity:.22}
+ .body,.top,.t-qj .body,.t-qj .top,.t-esp .body,.t-esp .top,.t-esp h2{max-width:none}
+ .tile h2{max-width:16ch}
+ .t-esp .sub{max-width:none}
  .sat{position:relative;z-index:0;width:auto;grid-template-rows:none;grid-template-columns:1fr 1fr;height:150px;margin:-24px -24px 0;order:-1}
  .next{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){.tile,.tile::after,.q i{transition:none}.tile:hover::after,.tile:hover .q i{transform:none}}
+@media (prefers-reduced-motion:reduce){.tile,.tile::after,.go i{transition:none}.tile:hover::after,.tile:hover .go i{transform:none}}
 </style>
-
 </head>
 <body>
 <div id="candado"><form id="candadoForm"><h1>💭 Para pensar cosas</h1><p style="margin:0;font-size:14px">Todavía está en pruebas: entra con la contraseña.</p>
@@ -124,76 +134,123 @@ try{localStorage.setItem('dt:pensar','1')}catch(err){}document.documentElement.c
 
 <header class="head">
 <div><p class="kicker">Hoy toca tianguis</p><h1>Para pensar cosas</h1></div>
-<p class="dek">Cifras y preguntas sobre los <b>1,066 sitios de tianguis</b> de la Ciudad de México: dónde se ponen, qué calle ocupan, con quién compiten y cómo cambian con los años. Con datos abiertos de la ADIP, el INEGI, la SEDECO, el CONEVAL y el satélite Sentinel-2.</p>
+<p class="dek">Cifras y preguntas sobre los <b>más de 1,300 tianguis</b> de la Ciudad de México, repartidos en 1,066 lugares: dónde se ponen, qué calle ocupan, con quién compiten y cómo cambian con los años. Con datos abiertos de la ADIP, el INEGI, la SEDECO, el CONEVAL y el satélite Sentinel-2.</p>
 </header>
 
 <section class="board" aria-label="Análisis">
 
 <a class="tile t-nse" href="pensar/nse.html">
-<div class="top"><span class="chip bor">Borrador</span><span>Nivel socioeconómico · Censo 2020</span></div>
-<div class="num"><b>57<small>%</small><span class="vs">vs 6%</span></b>
-<span>de la gente en las colonias de nivel más bajo solo tiene tianguis o mercado a 1 km. En las de nivel más alto, el 6%.</span></div>
+<div class="top"><span class="src">Nivel socioeconómico · Censo 2020</span></div>
+<h2>Al gusto del marchante</h2>
+<p class="sub">Hay tianguis en toda la ciudad, pero no son iguales</p>
+<div class="body"><div class="num"><b>57<small>%</small><span class="vs">vs 6%</span></b><span>de la gente con menos ingreso solo tiene un tianguis o un mercado a 1 km. Con más ingreso, el 6%.</span></div>
 <div class="duel" aria-hidden="true">
 <div><span>Muy bajo</span><s><em style="width:57%"></em></s><b>57%</b></div>
 <div><span>Muy alto</span><s><em style="width:6%"></em></s><b>6%</b></div>
-</div>
-<p class="q">Hay tianguis en toda la ciudad, pero no son iguales<i>→</i></p>
+</div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-km2" href="pensar/densidad.html">
-<div class="top"><span class="chip pub">Publicado</span><span>Densidad</span></div>
-<div class="num"><b>14</b><span>sitios de tianguis en un solo km² de San Felipe de Jesús</span></div>
-<p class="q">¿Cuál es el lugar con más tianguis por km² en la ciudad?<i>→</i></p>
+<div class="top"><span class="src">Densidad</span></div>
+<h2>Caben dos, caben catorce</h2>
+<p class="sub">¿Dónde se juntan más tianguis?</p>
+<div class="body"><div class="num"><b>14</b><span>sitios de tianguis en un solo km² de San Felipe de Jesús, en Gustavo A. Madero.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-des" href="pensar/desiertos.html">
-<div class="top"><span class="chip bor">Borrador</span><span>Alimentación · DENUE y CONEVAL</span></div>
-<div class="num"><b>4.6</b><span>tiendas de conveniencia o comida rápida por cada tienda de frescos en las colonias de más ingreso. En las de menos, 1.</span></div>
-<p class="q">En la Ciudad de México casi no hay desiertos alimentarios. Hay pantanos<i>→</i></p>
+<div class="top"><span class="src">Alimentación · DENUE y CONEVAL</span></div>
+<h2>Lo barato sale caro</h2>
+<p class="sub">No hay desiertos alimentarios: hay pantanos</p>
+<div class="body"><div class="num"><b>4.6</b><span>tiendas de conveniencia o comida rápida por cada tienda de frescos en las colonias de más ingreso. En las de menos, 1.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-com" href="pensar/comercio.html">
-<div class="top"><span class="chip bor">Borrador</span><span>Comercio y abasto · DENUE y SEDECO</span></div>
-<div class="num"><b>30<small>%</small></b><span>de la zona urbana solo tiene comercio popular a 1 km: un tianguis o un mercado</span></div>
-<p class="q">¿El tianguis compite con el súper o llega a donde el súper no llega?<i>→</i></p>
+<div class="top"><span class="src">Comercio · DENUE y SEDECO</span></div>
+<h2>Aquí no llega el súper</h2>
+<p class="sub">El tianguis llega a donde el súper no llega</p>
+<div class="body"><div class="num"><b>30<small>%</small></b><span>de la zona urbana solo tiene comercio popular a 1 km: un tianguis o un mercado.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-calle" href="pensar/calle.html">
-<div class="top"><span class="chip bor">Borrador</span><span>Espacio público</span></div>
-<div class="num"><b>355<small>km</small></b><span>de calle se vuelven mercado cada semana; 81 km solo el domingo</span></div>
-<p class="q">La calle que se presta<i>→</i></p>
+<div class="top"><span class="src">Espacio público</span></div>
+<h2>Préstame tu calle</h2>
+<p class="sub">La calle que cada semana se vuelve mercado</p>
+<div class="body"><div class="num"><b>355<small>km</small></b><span>de calle ocupan los tianguis cada semana; 81 km solo el domingo.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-qj" href="pensar/nse.html#calle">
-<div class="top"><span class="chip bor">Borrador</span><span>Espacio público · Locatel 311</span></div>
-<div class="num"><b>4<small>×</small></b><span>más quejas a Locatel por cada km de tianguis en las colonias de nivel más alto. Pero ahí se reporta 3 veces más de cualquier tema.</span></div>
+<div class="top"><span class="src">Espacio público · Locatel</span></div>
+<h2>Cada quien su banqueta</h2>
+<p class="sub">¿De quién es la calle?</p>
+<div class="body"><div class="num"><b>4<small>×</small></b><span>más quejas por km de tianguis en las colonias de nivel alto. Pero ahí se reporta 3 veces más de todo.</span></div>
 <div class="duel" aria-hidden="true">
 <div><span>Muy bajo</span><s><em style="width:24%"></em></s><b>0.16</b></div>
 <div><span>Muy alto</span><s><em style="width:100%"></em></s><b>0.66</b></div>
-</div>
-<p class="q">¿De quién es la calle?<i>→</i></p>
+</div></div>
+<p class="go">Leer el análisis<i>→</i></p>
+</a>
+
+<a class="tile t-ins" href="pensar/inseguridad.html">
+<div class="top"><span class="src">Inseguridad · Fiscalía CDMX</span></div>
+<h2>Aguas con la cartera</h2>
+<p class="sub">El día de tianguis hay más robos, pero pocos</p>
+<div class="body"><div class="num"><b>+26<small>%</small></b><span>robos a transeúnte de día cerca del tianguis cuando se pone. De noche, casi igual. Son unos 60 al año en toda la ciudad.</span></div>
+<div class="duel" aria-hidden="true">
+<div><span>De día</span><s><em style="width:87%"></em></s><b>+26%</b></div>
+<div><span>De noche</span><s><em style="width:10%"></em></s><b>+3%</b></div>
+</div></div>
+<p class="go">Leer el análisis<i>→</i></p>
+</a>
+
+<a class="tile t-inf" href="pensar/informal.html">
+<div class="top"><span class="src">Empleo · Censo 2020</span></div>
+<h2>Al día y sin seguro</h2>
+<p class="sub">Quiénes venden en la calle</p>
+<div class="body"><div class="num"><b>262<small>mil</small></b><span>personas venden en la calle o en tianguis. El 94% no tiene prestaciones y la mitad son mujeres.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
+</a>
+
+<a class="tile t-tra" href="pensar/transporte.html">
+<div class="top"><span class="src">Transporte · GTFS y Metro</span></div>
+<h2>Aquí a la vuelta</h2>
+<p class="sub">Al tianguis se llega a pie</p>
+<div class="body"><div class="num"><b>27<small>%</small></b><span>de los tianguis está a 500 m de Metro, Metrobús o Cablebús, casi igual que la gente (28%). Siguen a los vecinos, no al Metro.</span></div>
+<div class="duel" aria-hidden="true">
+<div><span>Tianguis</span><s><em style="width:27%"></em></s><b>27%</b></div>
+<div><span>Población</span><s><em style="width:28%"></em></s><b>28%</b></div>
+</div></div>
+<p class="go">Leer el análisis<i>→</i></p>
+</a>
+
+<a class="tile t-alt" href="pensar/altitud.html">
+<div class="top"><span class="src">Geografía · Copernicus DEM</span></div>
+<h2>Más arriba, más chiquito</h2>
+<p class="sub">Tianguis cuesta arriba</p>
+<div class="body"><div class="num"><b>33<span class="vs">vs 9</span></b><span>vendedores por cada mil habitantes en la planicie del antiguo lago. Arriba de 2,600 metros, 9.</span></div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 <a class="tile t-esp" href="pensar/espacio.html">
 <figure class="sat" aria-hidden="true"><img src="pensar/img/orozco_0.jpg" alt=""><img src="pensar/img/orozco_1.jpg" alt=""><figcaption>Orozco y Berra: día de tianguis y día normal</figcaption></figure>
-<div class="top"><span class="chip bor">Borrador</span><span>Satélite · Sentinel-2</span></div>
-<div class="num"><b>45<small>%</small></b><span>de los tianguis se encogió más del 15% en 2020, el año de la pandemia. Lo medimos desde el espacio en 115 tianguis. En 2021 el tianguis típico ya había vuelto.</span></div>
+<div class="top"><span class="src">Satélite · Sentinel-2</span></div>
+<h2>Se encogió el changarro</h2>
+<p class="sub">Los tianguis se ven desde el espacio</p>
+<div class="body"><div class="num"><b>45<small>%</small></b><span>de 115 tianguis medidos por satélite se encogió más del 15% en 2020, el año de la pandemia. En 2021 el tianguis típico ya había vuelto.</span></div>
 <div class="yr" aria-hidden="true">
 <div class="years"><i style="height:89%"></i><i class="lo" style="height:49%"></i><i style="height:80%"></i><i style="height:80%"></i><i style="height:80%"></i><i style="height:80%"></i><i style="height:80%"></i></div>
 <div class="yl"><span>2019</span><span>2020: la pandemia</span><span>2025</span></div>
-</div>
-<p class="q">Los tianguis se ven desde el espacio<i>→</i></p>
+</div></div>
+<p class="go">Leer el análisis<i>→</i></p>
 </a>
 
 </section>
 
-<section class="next">
-<h3>En preparación</h3>
-<ul>
-<li><b>Precios</b>Cuánto cuesta la misma canasta de frescos en el tianguis, el mercado y el súper.</li>
-</ul>
-</section>
-<p class="foot">Hoy toca tianguis · Jorge González Mireles. Las cifras de los borradores pueden cambiar.</p>
+<p class="foot">Hoy toca tianguis · Jorge González Mireles.</p>
 </main>
 
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c880fa78443845cf9ebfe920b5b8b13d"}'></script><!-- End Cloudflare Web Analytics -->
