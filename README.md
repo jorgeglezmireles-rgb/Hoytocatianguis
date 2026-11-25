@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.17** (noviembre 2026).
+Versión actual: **2.18** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,9 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.18
+- **Vista previa al compartir**: la imagen para compartir de la portada y de las páginas generales se pide como `compartir.jpg?v=3`. Así WhatsApp y Facebook descargan la imagen de nuevo, en lugar de usar la que tenían guardada de antes.
 
 ### 2.17
 - "Para pensar cosas": cuatro análisis nuevos con su ficha: altitud, transporte, inseguridad el día de tianguis y empleo informal.
