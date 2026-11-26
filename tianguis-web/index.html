@@ -2,8 +2,8 @@
 <html lang="es-MX">
 <head>
   <meta charset="UTF-8" />
-  <title>Hoy toca tianguis · Mapa colaborativo CDMX</title>
-  <meta name="description" content="Mapa de los tianguis de la Ciudad de México con datos oficiales de la ADIP y recomendaciones de la comunidad." />
+  <title>Hoy toca tianguis · Mapa de tianguis de la CDMX: cuáles hay hoy cerca de ti</title>
+  <meta name="description" content="¿Qué tianguis hay hoy cerca de ti? Mapa de los 1,367 tianguis de la Ciudad de México: qué días se ponen, horarios, calles y puestos recomendados por la comunidad." />
   <link rel="canonical" href="https://hoytocatianguis.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Hoy toca tianguis" />
@@ -31,16 +31,17 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" />
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=optional" rel="stylesheet" />
-  <!-- Leaflet desde cdnjs; si falla, respaldo en jsDelivr -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous" />
+  <!-- Tipografías servidas desde el propio sitio (antes Google Fonts): un dominio menos antes de pintar -->
+  <link rel="preload" href="static/fuentes/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="static/fuentes/lilita-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- Leaflet servido desde el propio sitio; si falla, respaldo en cdnjs -->
+  <link rel="stylesheet" href="static/vendor/leaflet-1.9.4/leaflet.css" />
+  <link rel="preload" as="script" href="static/vendor/leaflet-1.9.4/leaflet.js" />
   <link rel="preload" href="static/datos-2674bb1f9b.js" as="script" />
   <link rel="preload" href="static/mapa-base-b9050b6f71.bin" as="fetch" type="application/octet-stream" crossorigin="anonymous" />
   <style>
+    @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 200 800; font-display: optional; src: url(static/fuentes/plus-jakarta-sans-latin-wght-normal.woff2) format('woff2'); }
+    @font-face { font-family: 'Lilita One'; font-style: normal; font-weight: 400; font-display: swap; src: url(static/fuentes/lilita-one-latin-400-normal.woff2) format('woff2'); }
     :root {
       --papel: #FBF7F0;
       --crema: #FFF3D6;
@@ -316,6 +317,8 @@
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .dias-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px 8px; }
     .ficha-links { display: flex; flex-wrap: wrap; gap: 0 16px; margin-top: 6px; }
+    .dias-links { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; }
+    .dias-links a { font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; text-decoration: none; }
     .foot-links { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; padding-top: 4px; }
     .foot-links .link-btn { font-size: 13px; font-weight: 700; color: var(--tinta-suave); }
     .drawer-foot { padding: 10px 16px; border-top: 1px solid var(--borde-suave); background: var(--crema); text-align: center; }
@@ -384,6 +387,13 @@
     .cor-campo > legend { font-weight: 800; font-size: 14px; padding: 0 4px; }
     .aviso-cor { background: #EEF4F7; border: 1px solid #BFD5DD; border-radius: 12px; padding: 8px 12px; font-size: 13px; margin-top: 8px; }
     .fuente-com { background: #FFF6E5; border: 1px solid #E8C989; border-radius: 12px; padding: 10px 12px; font-size: 14px; }
+    .guardar { position: fixed; left: 12px; right: 68px; top: calc(var(--header-h) + 14px); z-index: 950; max-width: 400px; background: var(--papel); border: 1px solid var(--borde); border-radius: 16px; box-shadow: var(--sombra); padding: 12px 14px; display: grid; gap: 8px; opacity: 0; transform: translateY(-8px); transition: opacity .25s, transform .25s; }
+    .guardar[data-show="true"] { opacity: 1; transform: none; }
+    .guardar h3 { margin: 0; font-size: 16px; line-height: 1.2; }
+    .guardar p { margin: 0; font-size: 13px; color: var(--tinta-suave); }
+    .guardar .fila { display: flex; gap: 8px; flex-wrap: wrap; }
+    .guardar .btn { height: 36px; font-size: 13px; }
+    @media (prefers-reduced-motion: reduce) { .guardar { transition: none; } }
     .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); z-index: 1300; background: var(--tinta); color: var(--papel); padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; max-width: calc(100% - 32px); }
     .toast[data-show="true"] { opacity: 1; transform: translate(-50%, 0); }
     .form-error { color: #9B2C1F; font-weight: 700; font-size: 14px; min-height: 1em; margin: 0; }
@@ -411,6 +421,8 @@
       <div id="dayFilterBar" role="group" aria-label="Filtrar por día" style="display:flex;gap:6px"></div>
     </div>
   </header>
+  <script>/* CLS: el mapa nace con la altura real de la cabecera, así no brinca al cargar */
+    document.documentElement.style.setProperty('--header-h', document.getElementById('top').offsetHeight + 'px');</script>
 
   <!-- MAPA -->
   <main>
@@ -456,15 +468,18 @@
     </button>
     <button class="fab fab-osc" type="button" id="btnLista" aria-label="Buscar tianguis por colonia, calle o alcaldía" title="Buscar por colonia, calle o alcaldía">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg>
-      <span id="counterBadge">0</span>
+      <span id="counterBadge">1,367</span>
     </button>
   </div>
 
   <!-- FICHA -->
-  <aside class="sheet" id="sheet" data-state="min" aria-label="Ficha del tianguis">
+  <aside class="sheet con-busca" id="sheet" data-state="min" aria-label="Ficha del tianguis">
     <div class="sheet-head">
       <button class="handle only-mobile" type="button" id="sheetHandle" aria-label="Cambiar tamaño de la ficha"><span></span></button>
-      <div id="sheetHeader"></div>
+      <div id="sheetHeader" data-modo="inicio">
+      <h2 class="serif resalte">¿A cuál vamos hoy?</h2>
+      <p class="muted small" style="margin:2px 0 0">1,367 tianguis con estos filtros. Toca un punto del mapa o abre el directorio.</p>
+      <button type="button" class="busca-falsa" style="margin-top:8px" data-action="buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></svg>Busca por colonia, calle o alcaldía</button></div>
     </div>
     <div class="sheet-body" id="sheetBody"></div>
   </aside>
@@ -734,7 +749,7 @@
         <button class="btn btn-suave" type="button" data-action="reportar">📍 Reportar un tianguis</button>
         <button class="btn btn-primario" type="button" data-close="modalAcerca">🗺️ Ir al mapa</button>
       </div>
-      <p class="small muted" id="versionSitio" style="margin:0;text-align:center">Versión 2.18 · noviembre 2026</p>
+      <p class="small muted" id="versionSitio" style="margin:0;text-align:center">Versión 2.19 · noviembre 2026</p>
     </div>
   </div>
 
@@ -922,11 +937,11 @@
   </div>
 
   <!-- Scripts externos al final: la página se pinta antes de descargarlos (LCP) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous"></script>
+  <script src="static/vendor/leaflet-1.9.4/leaflet.js"></script>
   <script>
     if (!window.L) {
-      document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">');
-      document.write('<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"><\/script>');
+      document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">');
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous"><\/script>');
     }
   </script>
   <!-- Cuentas y recomendaciones compartidas (Supabase), sin bloquear. Si no carga, el mapa sigue en modo vista previa. -->
@@ -1056,8 +1071,9 @@
   // líneas sobre su tramo real a partir de zoom 15.
   const LINE_ZOOM = 15;
   let map, canvas, pinLayer, bufferLayer, lineLayer, selLayer, selMarker, baseLayer;
-  const BASE = { ready: false, feats: [], grid: new Map(), names: [] };
+  const BASE = { ready: false, d: null, feats: [], grid: new Map(), gridBajo: new Map(), names: [], sello: null, nSello: 0 };
   const CELL = 0.02;
+  const KIND = ['road', 'green', 'water'];
 
   const BASE_STYLE = {
     bg: '#EFE6D6', green: '#DCE2C6', water: '#BFD5DD', casing: '#CDBBA0', label: '#5E4B3C', halo: 'rgba(251,247,240,.92)',
@@ -1067,14 +1083,6 @@
   };
   const roadWidth = (c, z) => Math.max(.6, BASE_STYLE.width16[c] * Math.pow(2, (Math.min(z, 19) - 16) * (z > 16 ? .55 : 1)) * (z < 14 ? 1.6 : 1));
 
-  function decodeVarints(bytes) {
-    let pos = 0;
-    const v = () => { let r = 0, s = 1, b; do { b = bytes[pos++]; r += (b & 0x7f) * s; s *= 128; } while (b & 0x80); return r; };
-    const zz = n => (n % 2 ? -(n + 1) / 2 : n / 2);
-    const str = () => { const n = v(); const out = new TextDecoder().decode(bytes.subarray(pos, pos + n)); pos += n; return out; };
-    return { v, zz, str };
-  }
-
   async function gunzip(bin) {
     if ('DecompressionStream' in window) {
       const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));
@@ -1082,6 +1090,73 @@
     }
     await new Promise((ok, fail) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js'; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
     return window.pako.ungzip(bin);
+  }
+
+  // Lee el mapa base (más de 200 mil calles) y lo entrega en arreglos compactos.
+  // INP: corre en un Worker, fuera del hilo de la página, para que los toques respondan mientras se lee.
+  // Es una función cerrada (no usa nada de fuera) porque su texto se manda tal cual al Worker.
+  function leerMapaBase(bytes, CELL) {
+    let pos = 0;
+    const v = () => { let r = 0, s = 1, b; do { b = bytes[pos++]; r += (b & 0x7f) * s; s *= 128; } while (b & 0x80); return r; };
+    const zz = n => (n % 2 ? -(n + 1) / 2 : n / 2);
+    const str = () => { const n = v(); const out = new TextDecoder().decode(bytes.subarray(pos, pos + n)); pos += n; return out; };
+    const tramos = str(), names = str();
+    let cap = 1 << 21, pts = new Float64Array(cap), np = 0;
+    const off = [0], kind = [], cls = [], name = [], bbox = [];
+    const celdas = new Map(), celdasBajo = new Map();
+    const leer = (k, c, withName) => {
+      const n = v(), bajo = k !== 0 || c <= 3;       // "bajo": vías principales, áreas verdes y agua (lo único que se dibuja con zoom < 14)
+      for (let i = 0; i < n; i++) {
+        const nm = withName ? v() : -1, len = v();
+        if (np + len * 2 > cap) { while (np + len * 2 > cap) cap *= 2; const g = new Float64Array(cap); g.set(pts.subarray(0, np)); pts = g; }
+        let la = 0, lo = 0, s = 90, w = 180, nn = -90, e = -180;
+        for (let j = 0; j < len; j++) {
+          la += zz(v()); lo += zz(v());
+          const lat = la / 1e5, lng = lo / 1e5; pts[np++] = lat; pts[np++] = lng;
+          if (lat < s) s = lat; if (lat > nn) nn = lat; if (lng < w) w = lng; if (lng > e) e = lng;
+        }
+        const id = kind.length; kind.push(k); cls.push(c); name.push(nm); bbox.push(s, w, nn, e); off.push(np);
+        for (let a = Math.floor(s / CELL); a <= Math.floor(nn / CELL); a++)
+          for (let b = Math.floor(w / CELL); b <= Math.floor(e / CELL); b++) {
+            const key = a + ',' + b; let arr = celdas.get(key); if (!arr) celdas.set(key, arr = []); arr.push(id);
+            if (bajo) { let ab = celdasBajo.get(key); if (!ab) celdasBajo.set(key, ab = []); ab.push(id); }
+          }
+      }
+    };
+    for (let c = 0; c < 7; c++) leer(0, c, true);
+    leer(1, -1, false);
+    leer(2, -1, false);
+    const plana = m => {
+      let total = 0; for (const arr of m.values()) total += arr.length;
+      const keys = [...m.keys()], start = new Uint32Array(keys.length + 1), ids = new Uint32Array(total);
+      let p = 0; keys.forEach((k, i) => { start[i] = p; ids.set(m.get(k), p); p += m.get(k).length; }); start[keys.length] = p;
+      return { keys, start, ids };
+    };
+    const d = { tramos, names, pts: pts.slice(0, np), off: Uint32Array.from(off), kind: Uint8Array.from(kind), cls: Int8Array.from(cls),
+      name: Int32Array.from(name), bbox: Float64Array.from(bbox), grid: plana(celdas), gridBajo: plana(celdasBajo) };
+    d.transfer = [d.pts.buffer, d.off.buffer, d.kind.buffer, d.cls.buffer, d.name.buffer, d.bbox.buffer, d.grid.start.buffer, d.grid.ids.buffer, d.gridBajo.start.buffer, d.gridBajo.ids.buffer];
+    return d;
+  }
+  function leerEnWorker(bin, gz) {
+    return new Promise((ok, fail) => {
+      const src = `const leer = ${leerMapaBase.toString()};
+        onmessage = async e => { try { let b = e.data.bin;
+          if (e.data.gz) b = new Uint8Array(await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
+          const d = leer(b, e.data.CELL), t = d.transfer; delete d.transfer; postMessage({ d }, t);
+        } catch (err) { postMessage({ error: String(err) }); } };`;
+      const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+      const w = new Worker(url);
+      const fin = () => { w.terminate(); URL.revokeObjectURL(url); };
+      w.onmessage = e => { fin(); e.data.d ? ok(e.data.d) : fail(new Error(e.data.error)); };
+      w.onerror = e => { fin(); fail(new Error('No se pudo usar el Worker')); };
+      w.postMessage({ bin, gz, CELL });
+    });
+  }
+  // Cada calle se arma como objeto solo cuando hace falta dibujarla o consultarla
+  function feat(id) {
+    let f = BASE.feats[id];
+    if (!f) { const d = BASE.d, k = id * 4; f = BASE.feats[id] = { kind: KIND[d.kind[id]], c: d.cls[id], name: d.name[id], pts: d.pts.subarray(d.off[id], d.off[id + 1]), bbox: [d.bbox[k], d.bbox[k + 1], d.bbox[k + 2], d.bbox[k + 3]] }; }
+    return f;
   }
 
   async function loadEmbeddedData() {
@@ -1093,36 +1168,31 @@
       if (!res.ok) throw new Error('mapa base ' + res.status);
       bin = new Uint8Array(await res.arrayBuffer());
     } else bin = Uint8Array.from(atob(el.textContent.trim()), c => c.charCodeAt(0));
-    const r = decodeVarints(bin[0] === 0x1f && bin[1] === 0x8b ? await gunzip(bin) : bin);
-    const tramos = JSON.parse(r.str());
-    BASE.names = r.str().split('\n');
-    const readFeats = (kind, cls, withName) => {
-      const n = r.v();
-      for (let i = 0; i < n; i++) {
-        const name = withName ? r.v() : -1;
-        const len = r.v(); const pts = new Float64Array(len * 2);
-        let la = 0, lo = 0, s = 90, w = 180, nn = -90, e = -180;
-        for (let k = 0; k < len; k++) {
-          la += r.zz(r.v()); lo += r.zz(r.v());
-          const lat = la / 1e5, lng = lo / 1e5; pts[k * 2] = lat; pts[k * 2 + 1] = lng;
-          if (lat < s) s = lat; if (lat > nn) nn = lat; if (lng < w) w = lng; if (lng > e) e = lng;
-        }
-        const f = { kind, c: cls, name, pts, bbox: [s, w, nn, e] };
-        const id = BASE.feats.push(f) - 1;
-        for (let a = Math.floor(s / CELL); a <= Math.floor(nn / CELL); a++)
-          for (let b = Math.floor(w / CELL); b <= Math.floor(e / CELL); b++) {
-            const key = a + ',' + b; let arr = BASE.grid.get(key); if (!arr) BASE.grid.set(key, arr = []); arr.push(id);
-          }
-      }
-    };
-    for (let c = 0; c < 7; c++) readFeats('road', c, true);
-    readFeats('green', -1, false);
-    readFeats('water', -1, false);
+    let gz = bin[0] === 0x1f && bin[1] === 0x8b, d;
+    if (gz && !('DecompressionStream' in window)) { bin = await gunzip(bin); gz = false; }   // navegadores viejos: descomprime con pako
+    try { d = await leerEnWorker(bin, gz); }
+    catch (e) { console.warn('Mapa base sin Worker', e); d = leerMapaBase(gz ? await gunzip(bin) : bin, CELL); }
+    BASE.d = d; BASE.names = d.names.split('\n'); BASE.feats = new Array(d.kind.length);
+    const monta = g => { const m = new Map(); g.keys.forEach((k, i) => m.set(k, g.ids.subarray(g.start[i], g.start[i + 1]))); return m; };
+    BASE.grid = monta(d.grid); BASE.gridBajo = monta(d.gridBajo);
+    BASE.sello = new Uint32Array(d.kind.length);
     BASE.ready = true;
+    try { performance.mark('mapa-base-listo'); } catch (e) {}
     // Trazos de tianguis
-    for (const [id, t] of Object.entries(tramos)) {
-      const rec = REC_BY_ID[id]; if (!rec || rec.trazoCom) continue;
+    for (const [id, t] of Object.entries(JSON.parse(d.tramos))) {
+      const rec = REC_BY_ID[id]; if (!rec || rec.trazoCom || rec.sinTrazo) continue;
       rec.lines = t.l; rec.tq = t.q; rec.tn = t.n;
+    }
+  }
+
+  // El mapa ya está en pantalla cuando llegan las calles: se pintan y se ponen los trazos de los tianguis
+  function alLlegarMapaBase() {
+    if (!map) return;
+    baseLayer.redraw();
+    REDIBUJO.pins = true; REDIBUJO.resto = true; pedirRedibujo();
+    if (state.selected) {
+      renderSelectedMarker();
+      const el = document.querySelector('#sheetBody p.street'); if (el) el.innerHTML = tramoTexto(state.selected);
     }
   }
 
@@ -1137,23 +1207,26 @@
     if (!BASE.ready) return;
     const nw = map.options.crs.pointToLatLng(L.point(ox - 32, oy - 32), z);
     const se = map.options.crs.pointToLatLng(L.point(ox + 288, oy + 288), z);
-    const ids = new Set();
+    const grid = z < 14 ? BASE.gridBajo : BASE.grid, sello = BASE.sello, marca = ++BASE.nSello, D = BASE.d;
+    const feats = [];
     for (let a = Math.floor(se.lat / CELL); a <= Math.floor(nw.lat / CELL); a++)
       for (let b = Math.floor(nw.lng / CELL); b <= Math.floor(se.lng / CELL); b++) {
-        const arr = BASE.grid.get(a + ',' + b); if (arr) for (const id of arr) ids.add(id);
+        const arr = grid.get(a + ',' + b); if (!arr) continue;
+        for (let i = 0; i < arr.length; i++) {
+          const id = arr[i]; if (sello[id] === marca) continue; sello[id] = marca;
+          if (D.kind[id] === 0 ? z < BASE_STYLE.minZoom[D.cls[id]] : z < 11) continue;
+          const q = id * 4; if (D.bbox[q + 2] < se.lat || D.bbox[q] > nw.lat || D.bbox[q + 3] < nw.lng || D.bbox[q + 1] > se.lng) continue;
+          feats.push(feat(id));
+        }
       }
-    const feats = [];
-    for (const id of ids) {
-      const f = BASE.feats[id];
-      if (f.bbox[2] < se.lat || f.bbox[0] > nw.lat || f.bbox[3] < nw.lng || f.bbox[1] > se.lng) continue;
-      if (f.kind === 'road' ? z < BASE_STYLE.minZoom[f.c] : z < 11) continue;
-      feats.push(f);
-    }
+    // Dentro de un mosaico la proyección es casi lineal (error < 0.1 px desde zoom 10): evita sin/log por punto
+    const kx = 256 * Math.pow(2, z) / 360, x0 = mercX(nw.lng, z) - ox;
+    const y0 = mercY(nw.lat, z) - oy, ky = (mercY(se.lat, z) - oy - y0) / (se.lat - nw.lat);
     const path = f => {
       ctx.beginPath();
       const p = f.pts;
       for (let k = 0; k < p.length; k += 2) {
-        const x = mercX(p[k + 1], z) - ox, y = mercY(p[k], z) - oy;
+        const x = x0 + (p[k + 1] - nw.lng) * kx, y = y0 + (p[k] - nw.lat) * ky;
         k ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       }
     };
@@ -1310,6 +1383,7 @@
     return true;
   }
 
+  const CON_CURSOR = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const recHex = rec => state.day >= 0 ? DAYS[state.day].hex : dayColor(rec);
   const showsLine = rec => map && map.getZoom() >= LINE_ZOOM && rec.lines;
 
@@ -1331,7 +1405,7 @@
         fillColor: hex, fillOpacity: 1, bubblingMouseEvents: false
       });
       m.on('click', () => selectRec(recs[0], { fly: true }));
-      m.bindTooltip(escapeHtml(recs.length > 1 ? `${recs[0].nombre} · ${recs.length} días` : recs[0].nombre), { direction: 'top', offset: [0, -r] });
+      if (CON_CURSOR) m.bindTooltip(escapeHtml(recs.length > 1 ? `${recs[0].nombre} · ${recs.length} días` : recs[0].nombre), { direction: 'top', offset: [0, -r] });
       pinLayer.addLayer(m);
     }
   }
@@ -1350,7 +1424,7 @@
         L.polyline(line, { renderer: canvas, color: '#2B2118', weight: w + 3, opacity: .35, lineCap: 'round', interactive: false }).addTo(lineLayer);
         const pl = L.polyline(line, { renderer: canvas, color: hex, weight: w, opacity: .95, lineCap: 'round', bubblingMouseEvents: false }).addTo(lineLayer);
         pl.on('click', () => selectRec(rec));
-        pl.bindTooltip(escapeHtml(`${rec.nombre} · ${diasTexto(rec)}`), { sticky: true });
+        if (CON_CURSOR) pl.bindTooltip(escapeHtml(`${rec.nombre} · ${diasTexto(rec)}`), { sticky: true });
       }
     }
   }
@@ -1497,6 +1571,10 @@
         <p class="small" style="margin:10px 0 2px;font-weight:800">Cómo leer los colores</p>
         <p class="small muted" style="margin:0">Cada punto es la ubicación oficial ADIP, con el color del día en que se pone. Los puntos en tinta oscura tienen tianguis varios días en el mismo lugar. Los que tienen anillo amarillo ya tienen recomendaciones de la comunidad. Al acercarte, cada tianguis se dibuja como una línea sobre la calle que ocupa, entre sus calles de cruce. Los que no tienen calle identificada conservan el punto y un círculo proporcional a sus puestos.</p>
       </details>
+      <nav class="dias-links" aria-label="Listas de tianguis por día">
+        <span class="small muted" style="font-weight:800">Listas por día:</span>
+        ${DAYS.map((d, i) => `<a href="/dia/${['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'][i]}/" style="background:${d.hex};color:${textOn(d.hex)}">${d.label}</a>`).join('')}
+      </nav>
       <div class="foot-links">
         <a class="link-btn" href="/hoy/">📅 Tianguis de hoy</a>
         <a class="link-btn" href="/tianguis/">🗂️ Todos por alcaldía</a>
@@ -1580,8 +1658,9 @@
     state.selected = rec;
     renderFicha(rec);
     registrarVista(rec);
+    invitarGuardar();
     renderSelectedMarker();
-    renderBuffers(); renderLines(); renderPins();
+    REDIBUJO.pins = true; REDIBUJO.resto = true; pedirRedibujo();   // INP: primero se pinta la ficha, luego el mapa
     if (innerWidth < 1024 && state.sheet === 'min') setSheet('half');
     if (fly && map) {
       const z = Math.max(map.getZoom(), 16);
@@ -2590,7 +2669,7 @@
       for (let a = Math.floor((lat - dl) / CELL); a <= Math.floor((lat + dl) / CELL); a++)
         for (let b = Math.floor((lng - dn) / CELL); b <= Math.floor((lng + dn) / CELL); b++)
           for (const id of BASE.grid.get(a + ',' + b) || []) {
-            const f = BASE.feats[id], [s, w, n, e] = f.bbox;
+            const f = feat(id), [s, w, n, e] = f.bbox;
             if (nm(f) && n >= lat - dl && s <= lat + dl && e >= lng - dn && w <= lng + dn) out.add(f);
           }
       return [...out];
@@ -2812,9 +2891,9 @@
     if (d.lat && d.lng) {
       rec.sede.recs = rec.sede.recs.filter(r => r !== rec);
       rec.sede = { i: SEDES.length, lat: d.lat, lng: d.lng, recs: [rec] }; SEDES.push(rec.sede);
-      rec.lines = null; rec.tq = null;
+      rec.lines = null; rec.tq = null; rec.sinTrazo = true;
     }
-    if (d.ubicacion) { rec.ubicacion = d.ubicacion; if (!(d.lat && d.lng)) { rec.lines = null; rec.tq = null; } }
+    if (d.ubicacion) { rec.ubicacion = d.ubicacion; if (!(d.lat && d.lng)) { rec.lines = null; rec.tq = null; rec.sinTrazo = true; } }
     if (d.nombre) rec.nombre = d.nombre;
     if (d.dias) { rec.mask = d.dias; rec.dias = DAYS.filter((x, i) => rec.mask & (1 << i)); }
     if (d.horario) rec.horario = d.horario;
@@ -3403,6 +3482,50 @@
   }
   function terminarTour() { if (tourCaja) tourCaja.remove(); try { localStorage.setItem('htt:tour', 'visto'); } catch (e) {} }
   // Solo en celular, solo la primera vez, nunca dentro de la app (la app trae su propio recorrido)
+  /* ---------- Guardar la web en la pantalla de inicio ----------
+     Sale una sola tarjeta discreta en el celular, después de abrir el segundo tianguis de la visita.
+     Chrome/Android: instala con un toque. iPhone: explica Compartir → Agregar a inicio.
+     Dentro del navegador de X, Reddit, Instagram o Facebook no se puede instalar: ofrece abrirlo en el navegador.
+     No sale en la app, ni en computadora, ni si ya está instalada, ni después de 2 veces o de un "Ahora no". */
+  const GUARDAR = { prompt: null, abiertos: 0, visto: false };
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); GUARDAR.prompt = e; });
+  window.addEventListener('appinstalled', () => { guardarEstado({ si: 1 }); cerrarGuardar(); });
+  function guardarEstado(mas) {
+    let g = {}; try { g = JSON.parse(localStorage.getItem('htt:guardar') || '{}'); } catch (e) {}
+    if (mas) { g = { ...g, ...mas }; try { localStorage.setItem('htt:guardar', JSON.stringify(g)); } catch (e) {} }
+    return g;
+  }
+  function cerrarGuardar() { const el = $('guardarWeb'); if (el) { el.dataset.show = 'false'; setTimeout(() => el.remove(), 300); } }
+  function invitarGuardar() {
+    if (GUARDAR.visto || ++GUARDAR.abiertos < 2) return;
+    if (innerWidth >= 1024 || window.Capacitor || window.HTTApp || /HoyTocaApp/i.test(navigator.userAgent)) return;
+    if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) return;
+    const g = guardarEstado(); if (g.no || g.si || (g.n || 0) >= 2) return;
+    const ua = navigator.userAgent, ios = /iphone|ipad|ipod/i.test(ua), android = /android/i.test(ua);
+    const dentro = /FBAN|FBAV|Instagram|Twitter|Reddit|Line\/|; wv\)/i.test(ua);
+    let txt, boton;
+    if (dentro) { txt = 'Para tenerlo siempre a la mano, ábrelo en tu navegador y guárdalo en tu pantalla de inicio.'; boton = android ? 'Abrir en Chrome' : 'Copiar la liga'; }
+    else if (GUARDAR.prompt) { txt = 'Guárdalo en tu pantalla de inicio y ábrelo como una app, sin descargar nada.'; boton = 'Guardar'; }
+    else if (ios) { txt = 'Guárdalo en tu pantalla de inicio: toca <b>Compartir</b> y luego <b>“Agregar a inicio”</b>.'; boton = ''; }
+    else return;
+    GUARDAR.visto = true; guardarEstado({ n: (g.n || 0) + 1 });
+    setTimeout(() => {
+      if (document.querySelector('[data-open="true"]') || $('webTour')) return;
+      const el = document.createElement('aside'); el.id = 'guardarWeb'; el.className = 'guardar'; el.setAttribute('aria-label', 'Guardar el mapa en tu pantalla de inicio');
+      el.innerHTML = `<h3 class="serif">📌 Ten el mapa a la mano</h3><p>${txt}</p>
+        <div class="fila">${boton ? `<button type="button" class="btn btn-primario" data-g="si">${boton}</button>` : ''}<button type="button" class="btn btn-suave" data-g="no">${boton ? 'Ahora no' : 'Entendido'}</button></div>`;
+      el.addEventListener('click', async e => {
+        const b = e.target.closest('[data-g]'); if (!b) return;
+        if (b.dataset.g === 'no') { guardarEstado({ no: 1 }); cerrarGuardar(); return; }
+        if (dentro && android) { location.href = 'intent://hoytocatianguis.com/?src=guardar#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent('https://hoytocatianguis.com/?src=guardar') + ';end'; cerrarGuardar(); return; }
+        if (dentro) { try { await navigator.clipboard.writeText('https://hoytocatianguis.com/?src=guardar'); toast('Liga copiada. Pégala en Safari.'); } catch (err) { toast('Abre hoytocatianguis.com en Safari.'); } cerrarGuardar(); return; }
+        try { GUARDAR.prompt.prompt(); const r = await GUARDAR.prompt.userChoice; guardarEstado(r && r.outcome === 'accepted' ? { si: 1 } : { no: 1 }); } catch (err) {}
+        GUARDAR.prompt = null; cerrarGuardar();
+      });
+      document.body.appendChild(el); requestAnimationFrame(() => { el.dataset.show = 'true'; });
+    }, 1200);
+  }
+
   function tourPrimeraVez() {
     let visto = false; try { visto = !!localStorage.getItem('htt:tour'); } catch (e) { return; }
     if (visto || innerWidth >= 1024 || window.Capacitor || window.HTTApp || /HoyTocaApp/i.test(navigator.userAgent)) return;
@@ -3417,8 +3540,9 @@
     populateAlcaldias();
     document.documentElement.style.setProperty('--header-h', $('top').offsetHeight + 'px');
     try { renderSummary(); } catch (e) {}
-    await new Promise(ok => requestAnimationFrame(() => setTimeout(ok, 0)));   // LCP: deja pintar antes de descomprimir el mapa base
-    try { await loadEmbeddedData(); } catch (e) { console.warn('No se pudo leer el mapa base incrustado', e); }
+    await new Promise(ok => requestAnimationFrame(() => setTimeout(ok, 0)));   // LCP: deja pintar antes de armar el mapa
+    // INP: primero el mapa con sus puntos; las calles del mapa base se leen después, en tandas cortas
+    const baseLista = loadEmbeddedData().then(alLlegarMapaBase).catch(e => console.warn('No se pudo leer el mapa base incrustado', e));
     const ok = initMap();
     if (ok) map.invalidateSize();
     const fromHash = idDeUrl();
@@ -3426,7 +3550,7 @@
     applyFilters({ fit: false });
     document.documentElement.style.setProperty('--header-h', $('top').offsetHeight + 'px');
     if (map) map.invalidateSize();
-    if (REC_BY_ID[fromHash]) selectRec(REC_BY_ID[fromHash], { fly: true });
+    if (REC_BY_ID[fromHash]) { await baseLista; selectRec(REC_BY_ID[fromHash], { fly: true }); }   // la ficha necesita el trazo de la calle
     else locateMe({ auto: true });
     if (/acerca/.test(location.hash)) openOverlay('modalAcerca', '.icon-btn');
     tourPrimeraVez();

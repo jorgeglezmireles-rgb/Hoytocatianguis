@@ -1,6 +1,6 @@
 # Hoy toca tianguis
 
-Versión actual: **2.18** (noviembre 2026).
+Versión actual: **2.19** (noviembre 2026).
 
 Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatianguis.com
 
@@ -11,6 +11,16 @@ Mapa colaborativo de los tianguis de la Ciudad de México: https://hoytocatiangu
 Cada cambio que llega a `main` se publica automáticamente.
 
 ## Novedades
+
+### 2.19
+Mejoras a partir de las métricas de noviembre (Search Console y Cloudflare Web Analytics).
+- **Páginas por colonia** (`/colonia/<alcaldía>/<colonia>/`, 288 páginas): qué días se pone el tianguis de cada colonia, con la semana de un vistazo, horarios, calles y preguntas frecuentes. Juntan las fichas sueltas de un mismo rumbo (Santa Cruz Meyehualco tenía 12). Cada ficha y cada alcaldía enlazan a su colonia.
+- **Títulos con día y hora** en las 1,367 fichas ("Tianguis Santa Cruz Meyehualco: domingo, 8 a 19 h · Iztapalapa") y descripciones que responden primero cuándo se pone.
+- **/hoy/** responde "tianguis cerca de mí hoy": con un botón ordena los de hoy por distancia. La portada enlaza a las listas por día.
+- **El mapa ya no brinca al cargar** (la cabecera mide lo mismo desde el primer pintado) y el texto de inicio viene escrito en el HTML.
+- **Toques sin espera**: el mapa base (más de 200 mil calles) se lee en un Worker, fuera del hilo de la página; los puntos aparecen antes que las calles y el redibujo se hace después de mostrar la ficha.
+- **Menos dominios y mejor caché**: tipografías y Leaflet se sirven desde el propio sitio (`static/fuentes/`, `static/vendor/`) y los archivos con huella se guardan un año en el navegador (`netlify.toml`).
+- **Guardar en la pantalla de inicio**: tarjeta discreta en el celular al abrir el segundo tianguis de la visita.
 
 ### 2.18
 - **Vista previa al compartir**: la imagen para compartir de la portada y de las páginas generales se pide como `compartir.jpg?v=3`. Así WhatsApp y Facebook descargan la imagen de nuevo, en lugar de usar la que tenían guardada de antes.

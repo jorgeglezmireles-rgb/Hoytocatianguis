@@ -52,7 +52,25 @@
     try { hoy = new Intl.DateTimeFormat('es-MX', { weekday: 'long', timeZone: 'America/Mexico_City' }).format(new Date()).toLowerCase(); }
     catch (e) { hoy = NOMBRES[new Date().getDay()]; }
     var idx = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'].indexOf(hoy);
-    fetch('/static/semana.json?v=1').then(function (r) { return r.json(); }).then(function (S) {
+    fetch('/static/semana.json?v=2').then(function (r) { return r.json(); }).then(function (S) {
+      // "Cerca de mí": los de hoy ordenados por distancia (la ubicación solo se usa aquí, en el navegador)
+      var btn = document.querySelector('[data-cerca-btn]'), txt = document.querySelector('[data-cerca-txt]'), ulc = document.querySelector('[data-cerca-lista]');
+      if (btn && navigator.geolocation) btn.addEventListener('click', function () {
+        btn.disabled = true; btn.textContent = 'Buscando…';
+        navigator.geolocation.getCurrentPosition(function (p) {
+          var la = p.coords.latitude, lo = p.coords.longitude, R = Math.PI / 180, b2 = 1 << idx;
+          var hoyT = S.t.filter(function (t) { return t[3] & b2; }).map(function (t) {
+            var x = (t[7] - lo) * R * Math.cos((t[6] + la) / 2 * R), y = (t[6] - la) * R; return [Math.sqrt(x * x + y * y) * 6371, t];
+          }).sort(function (a, b) { return a[0] - b[0]; }).slice(0, 8);
+          var km = function (d) { return d < 1 ? (Math.round(d * 20) * 50) + ' m' : d.toFixed(1) + ' km'; };
+          ulc.innerHTML = hoyT.map(function (x) { var t = x[1]; return '<li><a href="' + t[0] + '"><span class="n">' + esc(t[1]) + '</span><span class="m">' + esc(t[4]) + ' · ' + esc(t[5]) + '</span></a><span class="dist">' + (x[0] <= 1.5 ? '🚶 ' : '🚌 ') + km(x[0]) + '</span></li>'; }).join('');
+          ulc.hidden = false; btn.style.display = 'none';
+          txt.innerHTML = hoyT.length && hoyT[0][0] < 60 ? 'Los <b>' + hoyT.length + ' tianguis de hoy más cercanos</b> a ti. El primero queda a ' + km(hoyT[0][0]) + '.' : 'Parece que estás lejos de la Ciudad de México. Abajo está la lista completa de hoy.';
+          if (!(hoyT.length && hoyT[0][0] < 60)) ulc.hidden = true;
+        }, function () { btn.disabled = false; btn.textContent = 'Usar mi ubicación'; txt.textContent = 'No pude leer tu ubicación. Revisa el permiso del navegador o busca tu alcaldía en la lista de abajo.'; },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+      });
+      else if (btn) btn.style.display = 'none';
       var d = S.dias[idx], bit = 1 << idx, grupos = {};
       S.t.forEach(function (t) { if (t[3] & bit) (grupos[t[2]] = grupos[t[2]] || []).push(t); });
       Object.keys(grupos).forEach(function (k) { grupos[k].sort(function (a, b) { return a[1].localeCompare(b[1], 'es'); }); });

@@ -1,3 +1,5 @@
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:200 800;font-display:optional;src:url(/static/fuentes/plus-jakarta-sans-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"Lilita One";font-style:normal;font-weight:400;font-display:swap;src:url(/static/fuentes/lilita-one-latin-400-normal.woff2) format("woff2")}
 :root{--papel:#FBF7F0;--crema:#FFF3D6;--tinta:#2B2118;--suave:#5E4B3C;--borde:#EBD6AE;--barro:#C8302A;--barro-osc:#A8231C;--tal:#136BA0;
 --serif:"Lilita One","Arial Rounded MT Bold","Arial Black",sans-serif;--sans:"Plus Jakarta Sans",system-ui,sans-serif}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--papel:#1C1712;--crema:#27201A;--tinta:#F1E8DA;--suave:#C2B49F;--borde:#3A3027;--barro:#E07A50;--barro-osc:#C8643C;--tal:#7DB3D0;color-scheme:dark}}
@@ -78,4 +80,16 @@ h3{margin:4px 0;font:700 1.05rem var(--sans)}
 @media (max-width:520px){.brand span{font-size:17px}.list li{flex-direction:column;gap:6px}.list li .day+.day{margin-left:0}}
 /* CLS: reserva espacio para la lista de /hoy/ mientras carga, para que el pie no brinque */
 [data-hoy]{min-height:120vh}
+/* Páginas por colonia: la semana de un vistazo */
+.semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0;padding:0;list-style:none}
+.semana li{display:grid;gap:4px;justify-items:center;padding:10px 2px;border-radius:12px;border:1px solid var(--borde);background:var(--crema);font:800 12px var(--sans);text-align:center}
+.semana li.si{background:var(--c);border-color:var(--c);color:#fff}
+.semana li.si[style*="#F2B705"],.semana li.si[style*="#E8641B"]{color:#2B2118}
+.semana li.no{color:var(--suave);opacity:.75}
+.semana li b{font:400 1.25rem/1 var(--serif)}
+.semana li a{color:inherit;text-decoration:none}
+.faq{display:grid;gap:14px}.faq h3{margin:0 0 2px}.faq p{margin:0;max-width:62ch}
+.cerca-hoy{display:grid;gap:10px;padding:16px;border-radius:14px;border:1px solid var(--borde);background:var(--crema)}
+.cerca-hoy p{margin:0}.cerca-hoy .list li:last-child{border-bottom:0}
+.dist{flex:none;font:800 13px var(--sans);color:var(--barro-osc);white-space:nowrap}
 @media (max-width:1023px){.solo-escritorio{display:none!important}}
