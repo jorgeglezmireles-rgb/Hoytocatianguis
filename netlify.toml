@@ -2,3 +2,22 @@
 [build]
   publish = "tianguis-web"
   command = ""
+
+# Archivos que nunca cambian de contenido bajo el mismo nombre (llevan huella o versión en la ruta):
+# el navegador los guarda un año y no vuelve a preguntar por ellos en cada visita.
+[[headers]]
+  for = "/static/datos-*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/static/mapa-base-*.bin"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/static/fuentes/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/static/vendor/leaflet-1.9.4/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
